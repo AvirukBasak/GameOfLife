@@ -5,7 +5,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-inline const char *ASSETS_PATH = "../../assets";
+inline auto ASSETS_PATH = "../../assets";
 
 std::string pathjoin(const std::initializer_list<std::string> paths);
 
