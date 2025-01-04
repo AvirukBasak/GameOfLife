@@ -1,4 +1,6 @@
-add_executable(GameeOfLife)
+add_executable(GameeOfLife
+        ../include/globals.h
+        globals.cpp)
 
 # add_subdirectory(subdir)
 

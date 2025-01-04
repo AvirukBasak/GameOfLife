@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 #include <sstream>
+
+#include "globals.h"
 
 int main() {
     // Create a window
@@ -13,7 +14,7 @@ int main() {
     // Create font for the counter text
     sf::Font font;
     // Make sure to have a valid font path
-    if (!font.loadFromFile("assets/fonts/arial.ttf")) {
+    if (!font.loadFromFile(pathjoin({ASSETS_PATH, "fonts", "arial.ttf"}))) {
         return -1;
     }
 
