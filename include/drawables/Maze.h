@@ -12,9 +12,8 @@
 #include "SFML/Graphics/Rect.hpp"
 
 class Maze final : public sf::Drawable {
-    int mMazeSize;
-
-    constexpr int mUnitMoveSize = 5;
+    int mImgLoadSize;
+    int mImgDrawSize;
 
     /**
      * Maze - 0 means blocked or wall, 1 means open or path.
@@ -22,15 +21,12 @@ class Maze final : public sf::Drawable {
     std::vector<std::vector<bool> > mBoolMaze;
     sf::Image mImage;
 
-    sf::IntRect mSrcBox;
-    sf::IntRect mDestBox;
-
 public:
-    static constexpr int IMGSIZE = 60;
+    static constexpr int CELLS_PER_DIMENSION = 60;
 
     enum UnitMove {
-        POSITIVE,
-        NEGATIVE,
+        POSITIVE = +5,
+        NEGATIVE = -5,
     };
 
     /**
@@ -47,32 +43,44 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     /**
-     * Returns the cell number (rw, column) in 0 indexed format given the pixel.
+     * Returns the cell number (x, y) in 0 indexed format given the pixel.
      * @param pixelX Pixel x coordinate
      * @param pixelY Pixel y coordinate
-     * @return Location of the cell in mBoolMaze
+     * @return - Location of the cell in mBoolMaze
      */
-    [[nodiscard]] static sf::Vector2i pixelToCellRowCol(int pixelX, int pixelY);
+    [[nodiscard]] static sf::Vector2i pixelToCellNumber(int pixelX, int pixelY);
 
     /**
      * Check if move to a new location is possible given current location and change in loaction.
-     * @param currentX Current pixel x value
-     * @param currentY Current pixel y value
+     * @param pixelX Current pixel x value
+     * @param pixelY Current pixel y value
      * @param dx Change in x direction
      * @param dy Chnage in y direction
-     * @return If new location is blocked, returns false
+     * @return - If new location is blocked, returns false
      */
-    [[nodiscard]] bool isValidMove(int currentX, int currentY, UnitMove dx, UnitMove dy) const;
+    [[nodiscard]] bool isValidMoveInPixels(int pixelX, int pixelY, UnitMove dx, UnitMove dy) const;
 
     /**
-     * @return - The cell bounds of starting point
+     * Check if (i, j) is a valid cell number.
+     * @param cellNum Cell number (x, y)
+     * @return - True if within bounds of mBoolMaze
      */
-    [[nodiscard]] sf::IntRect getSrcCellBounds() const;
+    [[nodiscard]] bool isCellNumberValid(sf::Vector2i cellNum) const;
 
     /**
-     * @return - The cell bounds of destination point
+     * @return - The cell number (x, y) of starting point
      */
-    [[nodiscard]] sf::IntRect getDestCellBounds() const;
+    [[nodiscard]] sf::Vector2i getSrcCellNumber() const;
+
+    /**
+     * @return - The cell number (x, y) of destination point
+     */
+    [[nodiscard]] sf::Vector2i getDestCellNumber() const;
+
+    /**
+     * @return - The size (width & height) of any cell in pixels.
+     */
+    [[nodiscard]] float getCellSizeInPixels() const;
 };
 
 #endif // CLASSES_MAZE_H
