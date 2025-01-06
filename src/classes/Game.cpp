@@ -10,6 +10,8 @@ Game::Game(sf::RenderWindow &window) : mWindow(window),
                                        mMaze(WINDOW_WIDTH, WINDOW_HEIGHT) {
 }
 
+Game::~Game() = default;
+
 void Game::update() {
     if (mCounterClock.getElapsedTime() >= sf::milliseconds(1000)) {
         mCounterText.incrementCount();
@@ -23,5 +25,3 @@ void Game::render() const {
     mWindow.draw(mCounterText);
     mWindow.display();
 }
-
-Game::~Game() = default;

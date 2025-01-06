@@ -18,15 +18,15 @@ CounterText::CounterText(const std::string& text) : mCounter(0) {
     mText.setString(text);
 }
 
+CounterText::~CounterText() = default;
+
+void CounterText::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
+    target.draw(mText, states);
+}
+
 void CounterText::incrementCount() {
     mCounter++;
     std::stringstream ss;
     ss << "Elapsed Seconds: " << mCounter;
     mText.setString(ss.str());
 }
-
-void CounterText::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
-    target.draw(mText, states);
-}
-
-CounterText::~CounterText() = default;

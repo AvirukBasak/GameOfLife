@@ -14,6 +14,8 @@ class Game {
 public:
     explicit Game(sf::RenderWindow &window);
 
+    ~Game();
+
     /**
      * Runs on every iteration of game loop
      */
@@ -23,8 +25,6 @@ public:
      * Runs 1/FPS times per second in game loop.
      */
     void render() const;
-
-    ~Game();
 
 private:
     sf::RenderWindow &mWindow;

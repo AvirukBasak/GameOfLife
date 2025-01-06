@@ -3,3 +3,7 @@
 //
 
 #include "classes/Entity.h"
+
+Entity::Entity() = default;
+
+Entity::~Entity() = default;
