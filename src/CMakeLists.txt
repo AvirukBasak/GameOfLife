@@ -1,10 +1,9 @@
 add_executable(GameeOfLife
         globals.cpp
-        drawables/Maze.cpp
-        classes/Entity.cpp
         classes/Game.cpp
+        classes/Entity.cpp
+        drawables/Maze.cpp
         drawables/CounterText.cpp
-        ../include/drawables/CounterText.h
 )
 
 # add_subdirectory(subdir)
