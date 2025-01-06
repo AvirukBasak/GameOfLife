@@ -39,7 +39,14 @@ Maze::Maze(const int width, const int height)
             for (int k = 0; k < 4; k++) {
                 grayScale += static_cast<float>(pixel[k]) / 4;
             }
-            mBoolMaze[i][j] = static_cast<sf::Uint8>(grayScale) >= 0.5;
+            /* Grayscale by mean for only R, G or B and 0 alpha
+             * comes at around 63.27 and 0x41 is 65. So 0x41 - 2
+             * i.e. 0x3F is 63, which is just below 63.75.
+             * The reason for doing this is coz there are 2 cells in
+             * the actual image that have markings in primary color
+             * Rather than pure black or white, and they should be
+             * interpreted as white. */
+            mBoolMaze[i][j] = grayScale >= 0x3F;
         }
     }
 
@@ -74,7 +81,7 @@ bool Maze::isValidMoveInPixels(int pixelX, int pixelY, const UnitMove dx, const 
     const int newX = pixelX + dx;
     const int newY = pixelY + dy;
     const auto cellNum = pixelToCellNumber(newX, newY);
-    return isCellNumberValid(cellNum);
+    return isCellNumberValid(cellNum) && true == mBoolMaze[cellNum.y][cellNum.x];
 }
 
 bool Maze::isCellNumberValid(sf::Vector2i cellNum) const {
