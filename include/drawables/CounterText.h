@@ -8,14 +8,18 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Drawable.hpp"
 
-class CounterText : public sf::Drawable {
+class CounterText final : public sf::Drawable {
     sf::Text mText;
     sf::Font mFont;
     int mCounter;
+
 public:
-    explicit CounterText(const std::string& text);
+    explicit CounterText(const std::string &text);
+
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
     ~CounterText() override;
+
     void incrementCount();
 };
 

@@ -11,6 +11,13 @@
 #include "drawables/Maze.h"
 
 class Game {
+    sf::RenderWindow &mWindow;
+
+    CounterText mCounterText;
+    Maze mMaze;
+
+    sf::Clock mCounterClock;
+
 public:
     explicit Game(sf::RenderWindow &window);
 
@@ -25,14 +32,6 @@ public:
      * Runs 1/FPS times per second in game loop.
      */
     void render() const;
-
-private:
-    sf::RenderWindow &mWindow;
-
-    CounterText mCounterText;
-    Maze mMaze;
-
-    sf::Clock mCounterClock;
 };
 
 #endif // CLASSES_GAME_H

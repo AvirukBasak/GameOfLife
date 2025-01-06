@@ -8,6 +8,7 @@
 class Entity final {
 public:
     Entity();
+
     ~Entity();
 };
 
