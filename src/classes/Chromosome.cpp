@@ -6,6 +6,7 @@
 
 #include <random>
 #include <algorithm>
+#include <cassert>
 
 // Random number generation setup (see https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution)
 static std::random_device rd;
@@ -54,25 +55,42 @@ Chromosome Chromosome::mutateRandom(int mutationCount) const {
     return mutated;
 }
 
-Chromosome Chromosome::crossoverSinglePoint(const Chromosome &other) const {
-    Chromosome child(this->mMazePtr);
+std::pair<Chromosome, Chromosome> Chromosome::crossoverSinglePoint(const Chromosome &other) const {
+    Chromosome child1(this->mMazePtr), child2(this->mMazePtr);
 
-    // Ensure child has same size as parents
-    child.mChromoString.resize(mChromoString.size());
+    // Ensure children have same size as parents
+    assert(child1.mChromoString.size() == this->mChromoString.size());
+    assert(child1.mChromoString.size() == other.mChromoString.size());
+    assert(child2.mChromoString.size() == this->mChromoString.size());
+    assert(child2.mChromoString.size() == other.mChromoString.size());
 
-    // Select random crossover point
+    // Select random crossover point for this parent.
     std::uniform_int_distribution<> distrib(0, static_cast<int>(mChromoString.size()) - 1);
     const int crossoverPoint = distrib(gen);
 
-    // Copy genes from first parent up to crossover point
-    std::copy(mChromoString.begin(),
-              mChromoString.begin() + crossoverPoint,
-              child.mChromoString.begin());
+    // Do child1 = this[:cp] + other[cp:]
+    std::copy(
+        mChromoString.begin(),
+        mChromoString.begin() + crossoverPoint,
+        child1.mChromoString.begin()
+    );
+    std::copy(
+        other.mChromoString.begin() + crossoverPoint,
+        other.mChromoString.end(),
+        child1.mChromoString.begin() + crossoverPoint
+    );
 
-    // Copy genes from second parent after crossover point
-    std::copy(other.mChromoString.begin() + crossoverPoint,
-              other.mChromoString.end(),
-              child.mChromoString.begin() + crossoverPoint);
+    // Do child1 = other[:cp] + this[cp:]
+    std::copy(
+        other.mChromoString.begin(),
+        other.mChromoString.begin() + crossoverPoint,
+        child2.mChromoString.begin()
+    );
+    std::copy(
+        mChromoString.begin() + crossoverPoint,
+        mChromoString.end(),
+        child2.mChromoString.begin() + crossoverPoint
+    );
 
-    return child;
+    return {child1, child2};
 }

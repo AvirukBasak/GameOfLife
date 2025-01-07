@@ -47,9 +47,9 @@ public:
      * from either chromosome and the genetic information is exchanged. Ensures the length
      * of child chromsome remains equal to that of the parents.
      * @param other Another chromosome to crossover with.
-     * @return A new child chromosome
+     * @return Two new children
      */
-    [[nodiscard]] Chromosome crossoverSinglePoint(const Chromosome &other) const;
+    [[nodiscard]] std::pair<Chromosome, Chromosome> crossoverSinglePoint(const Chromosome &other) const;
 };
 
 #endif //CLASSES_CHROMOSOME_H
