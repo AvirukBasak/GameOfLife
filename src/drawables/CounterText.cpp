@@ -7,15 +7,23 @@
 #include "globals.h"
 #include "drawables/CounterText.h"
 
-CounterText::CounterText(const std::string& text) : mCounter(0) {
-    if (!mFont.loadFromFile(pathjoin({ASSETS_PATH, "fonts", "arial.ttf"}))) {
-        throw std::runtime_error("Failed to load font");
+std::string mkStrFromCount(const int count) {
+    std::stringstream ss;
+    ss << "Elapsed Time: " << count << " second";
+    if (count != 1) ss << "s";
+    return ss.str();
+}
+
+CounterText::CounterText(const int initialCount) : mCounter(initialCount) {
+    const std::string fontpath = pathjoin({ASSETS_PATH, "fonts", "arial.ttf"});
+    if (!mFont.loadFromFile(fontpath)) {
+        throw std::runtime_error("Failed to load '" + fontpath + "'");
     }
     mText.setFont(mFont);
     mText.setCharacterSize(20);
     mText.setFillColor(sf::Color::White);
     mText.setPosition(WINDOW_HEIGHT + 20, 20);
-    mText.setString(text);
+    mText.setString(mkStrFromCount(initialCount));
 }
 
 CounterText::~CounterText() = default;
@@ -26,7 +34,5 @@ void CounterText::draw(sf::RenderTarget &target, const sf::RenderStates states) 
 
 void CounterText::incrementCount() {
     mCounter++;
-    std::stringstream ss;
-    ss << "Elapsed Seconds: " << mCounter;
-    mText.setString(ss.str());
+    mText.setString(mkStrFromCount(mCounter));
 }

@@ -6,7 +6,7 @@
 #include "classes/Game.h"
 
 Game::Game(sf::RenderWindow &window) : mWindow(window),
-                                       mCounterText("Loading Counter..."),
+                                       mCounterText(),
                                        mMaze(WINDOW_WIDTH, WINDOW_HEIGHT) {
 }
 

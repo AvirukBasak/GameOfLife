@@ -14,7 +14,7 @@ class CounterText final : public sf::Drawable {
     int mCounter;
 
 public:
-    explicit CounterText(const std::string &text);
+    explicit CounterText(int initialCount = 0);
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
