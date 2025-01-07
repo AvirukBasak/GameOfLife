@@ -4,14 +4,109 @@
 
 #include <cassert>
 #include <cstring>
+#include <vector>
+#include <queue>
+#include <limits>
+#include <iostream>
+#include <iomanip>
 
 #include "globals.h"
 #include "drawables/Maze.h"
 
+template<typename T>
+void printMatrix(const std::vector<std::vector<T> > &matrix, const std::string &name) {
+    for (const auto &row: matrix) {
+        for (const auto &cell: row) {
+            if ("mFitnessMaze" == name) {
+                if (cell == -1) {
+                    std::cout << "\u2588\u2588\u2588\u2588";
+                } else {
+                    std::cout << std::setw(3) << cell << " ";
+                }
+            } else {
+                if (false == cell) {
+                    std::cout << "\u2588";
+                } else {
+                    std::cout << " ";
+                }
+            }
+        }
+        std::cout << '\n';
+    }
+}
+
+void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vector<std::vector<int> > &mFitnessMaze) {
+    const int size = static_cast<int>(mBoolMaze.size());
+    const int destX = size - 2;
+    const int destY = size - 2;
+
+    // Define directions for up, down, left, right
+    const std::vector<sf::Vector2i> directions = {
+        {-1, 0},
+        {+1, 0},
+        {0, -1},
+        {0, +1}
+    };
+
+    // BFS to calculate the shortest path distances
+    std::queue<std::pair<int, int> > queue;
+
+    /* Fill cells of mFitnessMaze coreesponding to 0 cells of mBoolMaze
+     * with std::numeric_limits<int>::max() */
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (false == mBoolMaze[i][j]) {
+                mFitnessMaze[i][j] = std::numeric_limits<int>::max();
+            }
+        }
+    }
+
+    if (true == mBoolMaze[destY][destX]) {
+        queue.emplace(destX, destY);
+        mFitnessMaze[destY][destX] = 0;
+    } else {
+        throw std::invalid_argument("Unexpected false at Maze starting cell");
+    }
+
+    while (!queue.empty()) {
+        auto [x, y] = queue.front();
+        queue.pop();
+
+        for (const auto &[dx, dy]: directions) {
+            const int nx = x + dx;
+            const int ny = y + dy;
+
+            if (nx >= 0 && nx < size &&
+                ny >= 0 && ny < size &&
+                true == mBoolMaze[ny][nx] &&
+                mFitnessMaze[ny][nx] > mFitnessMaze[y][x] + 1
+            ) {
+                mFitnessMaze[ny][nx] = mFitnessMaze[y][x] + 1;
+                queue.emplace(nx, ny);
+            }
+        }
+    }
+
+    // Fill cells that are not reachable with a specific value (e.g., -1)
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (mFitnessMaze[i][j] == std::numeric_limits<int>::max()) {
+                // Indicating unreachable cells
+                mFitnessMaze[i][j] = -1;
+            }
+        }
+    }
+
+    // Print matrix
+    // printMatrix(mBoolMaze, "mBoolMaze");
+    printMatrix(mFitnessMaze, "mFitnessMaze");
+}
+
 Maze::Maze(const int width, const int height)
     : mImgLoadSize(CELLS_PER_DIMENSION),
       mImgDrawSize(std::min(width, height)),
-      mBoolMaze(CELLS_PER_DIMENSION, std::vector<bool>(CELLS_PER_DIMENSION, false)) {
+      mBoolMaze(CELLS_PER_DIMENSION, std::vector<bool>(CELLS_PER_DIMENSION, false)),
+      mFitnessMaze(CELLS_PER_DIMENSION, std::vector<int>(CELLS_PER_DIMENSION, WORST_FITNESS_VALUE)) {
     /* Tasks:
      * - Load the IMGSIZE X IMGSIZE image Black / White image
      * - Set mBoolMaze values to mean of 4 channels of the image
@@ -39,20 +134,16 @@ Maze::Maze(const int width, const int height)
             for (int k = 0; k < 4; k++) {
                 grayScale += static_cast<float>(pixel[k]) / 4;
             }
-            /* Grayscale by mean for only R, G or B and 0 alpha
-             * comes at around 63.27 and 0x41 is 65. So 0x41 - 2
-             * i.e. 0x3F is 63, which is just below 63.75.
-             * The reason for doing this is coz there are 2 cells in
-             * the actual image that have markings in primary color
-             * Rather than pure black or white, and they should be
-             * interpreted as white. */
-            mBoolMaze[i][j] = grayScale >= 0x3F;
+            mBoolMaze[i][j] = grayScale >= 64;
         }
     }
 
-    // ensure (1,1) and (59-1, 59-1) are true
+    // Ensure (1,1) and (59-1, 59-1) are true
     assert(mBoolMaze[1][1]);
     assert(mBoolMaze[CELLS_PER_DIMENSION-2][CELLS_PER_DIMENSION-2]);
+
+    // Fill the fitness matrix
+    fillFitnessMaze(mBoolMaze, mFitnessMaze);
 }
 
 Maze::~Maze() = default;
@@ -77,7 +168,7 @@ sf::Vector2i Maze::pixelToCellNumber(const int pixelX, const int pixelY) {
     return {pixelX / CELLS_PER_DIMENSION, pixelY / CELLS_PER_DIMENSION};
 }
 
-bool Maze::isValidMoveInPixels(int pixelX, int pixelY, const UnitMove dx, const UnitMove dy) const {
+bool Maze::isValidMoveInPixels(const int pixelX, const int pixelY, const UnitMove dx, const UnitMove dy) const {
     const int newX = pixelX + dx;
     const int newY = pixelY + dy;
     const auto cellNum = pixelToCellNumber(newX, newY);
@@ -87,6 +178,11 @@ bool Maze::isValidMoveInPixels(int pixelX, int pixelY, const UnitMove dx, const 
 bool Maze::isCellNumberValid(sf::Vector2i cellNum) const {
     const auto [j, i] = cellNum;
     return i >= 0 && i < mBoolMaze.size() && j >= 0 && j < mBoolMaze[0].size();
+}
+
+int Maze::getFitnessOfCellNumber(sf::Vector2i cellNum) const {
+    const auto [j, i] = cellNum;
+    return WORST_FITNESS_VALUE - mFitnessMaze[i][j];
 }
 
 sf::Vector2i Maze::getSrcCellNumber() const {

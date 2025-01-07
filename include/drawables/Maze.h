@@ -9,9 +9,10 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Image.hpp"
-#include "SFML/Graphics/Rect.hpp"
 
 class Maze final : public sf::Drawable {
+    static constexpr int WORST_FITNESS_VALUE = 999;
+
     int mImgLoadSize;
     int mImgDrawSize;
 
@@ -19,6 +20,7 @@ class Maze final : public sf::Drawable {
      * Maze - 0 means blocked or wall, 1 means open or path.
      */
     std::vector<std::vector<bool> > mBoolMaze;
+    std::vector<std::vector<int> > mFitnessMaze;
     sf::Image mImage;
 
 public:
@@ -66,6 +68,13 @@ public:
      * @return - True if within bounds of mBoolMaze
      */
     [[nodiscard]] bool isCellNumberValid(sf::Vector2i cellNum) const;
+
+    /**
+     * Returns a fitness value in range of [0, 999]
+     * @param cellNum  Cell number (x, y)
+     * @return Fitness value if an entity stops at cellNum. The higher the value, the better.
+     */
+    [[nodiscard]] int getFitnessOfCellNumber(sf::Vector2i cellNum) const;
 
     /**
      * @return - The cell number (x, y) of starting point
