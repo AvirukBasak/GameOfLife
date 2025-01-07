@@ -5,10 +5,34 @@
 #ifndef CLASSES_MAZE_H
 #define CLASSES_MAZE_H
 
+#include <unordered_map>
 #include <vector>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Image.hpp"
+
+template<>
+struct std::hash<sf::Vector2<int32_t> > {
+    size_t operator()(const sf::Vector2<int32_t> &sfVec2i32) const noexcept {
+        // Shift x left by 32 bits and combine with y using XOR
+        // This assumes x and y are 32-bit integers
+        return static_cast<size_t>(
+            (static_cast<int64_t>(sfVec2i32.x) << 32) |
+            static_cast<int64_t>(sfVec2i32.y)
+        );
+    }
+};
+
+class ChromosmeFriend final {
+    friend class Chromosome;
+    friend class Maze;
+
+    int mWhiteCellCount;
+    std::unordered_map<sf::Vector2i, int> mCellNumberToGeneIndexMapping;
+
+public:
+    ChromosmeFriend();
+};
 
 class Maze final : public sf::Drawable {
     static constexpr int WORST_FITNESS_VALUE = 999;
@@ -24,6 +48,8 @@ class Maze final : public sf::Drawable {
     sf::Image mImage;
 
 public:
+    ChromosmeFriend mChromosmeFriend;
+
     static constexpr int CELLS_PER_DIMENSION = 60;
 
     enum UnitMove {

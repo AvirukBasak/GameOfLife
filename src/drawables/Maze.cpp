@@ -102,6 +102,10 @@ void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vect
     printMatrix(mFitnessMaze, "mFitnessMaze");
 }
 
+ChromosmeFriend::ChromosmeFriend()
+    : mWhiteCellCount(0), mCellNumberToGeneIndexMapping() {
+}
+
 Maze::Maze(const int width, const int height)
     : mImgLoadSize(CELLS_PER_DIMENSION),
       mImgDrawSize(std::min(width, height)),
@@ -134,7 +138,13 @@ Maze::Maze(const int width, const int height)
             for (int k = 0; k < 4; k++) {
                 grayScale += static_cast<float>(pixel[k]) / 4;
             }
-            mBoolMaze[i][j] = grayScale >= 64;
+            // If white image cell (or far enough from black in color)
+            if (grayScale >= 64) {
+                mBoolMaze[i][j] = true;                 // Mark cell as true
+                mChromosmeFriend.mWhiteCellCount += 1;  // Increment count of white cells by 1
+                // Set mCellNumberToGeneIndexMapping for (j, i) i.e. (row, col) to the index of gene
+                mChromosmeFriend.mCellNumberToGeneIndexMapping[sf::Vector2i(j, i)] = mChromosmeFriend.mWhiteCellCount -1;
+            }
         }
     }
 
