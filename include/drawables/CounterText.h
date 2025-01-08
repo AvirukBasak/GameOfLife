@@ -8,7 +8,9 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Drawable.hpp"
 
-class CounterText final : public sf::Drawable {
+#include "interfaces/IRenderable.h"
+
+class CounterText final : public IRenderable {
     sf::Text mText;
     sf::Font mFont;
     int mCounter;
@@ -21,6 +23,9 @@ public:
     ~CounterText() override;
 
     void incrementCount();
+    void update() override;
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 
 #endif //CLASSES_COUNTERTEXT_H

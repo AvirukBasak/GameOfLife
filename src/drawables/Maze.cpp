@@ -158,6 +158,9 @@ Maze::Maze(const int width, const int height)
 
 Maze::~Maze() = default;
 
+void Maze::update() {
+}
+
 void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     sf::Texture texture;
     texture.loadFromImage(mImage);

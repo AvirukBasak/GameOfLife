@@ -7,16 +7,14 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "drawables/CounterText.h"
 #include "drawables/Maze.h"
+#include "drawables/CounterText.h"
 
 class Game {
     sf::RenderWindow &mWindow;
 
-    CounterText mCounterText;
     Maze mMaze;
-
-    sf::Clock mCounterClock;
+    CounterText mCounterText;
 
 public:
     explicit Game(sf::RenderWindow &window);

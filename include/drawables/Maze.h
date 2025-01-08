@@ -11,6 +11,8 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Image.hpp"
 
+#include "interfaces/IRenderable.h"
+
 template<>
 struct std::hash<sf::Vector2<int32_t> > {
     size_t operator()(const sf::Vector2<int32_t> &sfVec2i32) const noexcept {
@@ -36,6 +38,7 @@ public:
 
 class Maze final : public sf::Drawable {
     static constexpr int WORST_FITNESS_VALUE = 999;
+class Maze final : public IRenderable {
 
     int mImgLoadSize;
     int mImgDrawSize;
@@ -67,6 +70,8 @@ public:
     explicit Maze(int width, int height);
 
     ~Maze() override;
+
+    void update() override;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 

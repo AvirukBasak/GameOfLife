@@ -5,18 +5,15 @@
 #include "globals.h"
 #include "classes/Game.h"
 
-Game::Game(sf::RenderWindow &window) : mWindow(window),
-                                       mCounterText(0),
-                                       mMaze(WINDOW_WIDTH, WINDOW_HEIGHT) {
+Game::Game(sf::RenderWindow &window) : mWindow(window), mMaze(WINDOW_WIDTH, WINDOW_HEIGHT),
+                                       mCounterText(0) {
 }
 
 Game::~Game() = default;
 
 void Game::update() {
-    if (mCounterClock.getElapsedTime() >= sf::milliseconds(1000)) {
-        mCounterText.incrementCount();
-        mCounterClock.restart();
-    }
+    mMaze.update();
+    mCounterText.update();
 }
 
 void Game::render() const {
