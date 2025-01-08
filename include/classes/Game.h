@@ -7,6 +7,7 @@
 
 #include "SFML/Graphics.hpp"
 
+#include "drawables/Entity.h"
 #include "drawables/Maze.h"
 #include "drawables/CounterText.h"
 
@@ -15,6 +16,7 @@ class Game {
 
     Maze mMaze;
     CounterText mCounterText;
+    std::vector<Entity> mEntities{};
 
 public:
     explicit Game(sf::RenderWindow &window);

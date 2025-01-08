@@ -8,29 +8,33 @@
 #include "drawables/Maze.h"
 #include "drawables/Entity.h"
 
+#include <iostream>
+
 Entity::Entity(const Maze &maze)
     : mMaze(maze), mChromosome(maze) {
-    mShape.setRadius(maze.getCellSizeInPixels() / 2);
+    mShape.setRadius(static_cast<float>(maze.getCellSizeInPixels()) / 4);
     mShape.setFillColor(sf::Color::Red);
+    const auto pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
-        static_cast<float>(maze.getSrcCellNumber().x),
-        static_cast<float>(maze.getSrcCellNumber().y)
+        static_cast<float>(pixel.x),
+        static_cast<float>(pixel.y)
     );
 };
 
 Entity::Entity(const Maze &maze, Chromosome chromosome)
     : mMaze(maze), mChromosome(std::move(chromosome)) {
-    mShape.setRadius(maze.getCellSizeInPixels() / 2);
+    mShape.setRadius(static_cast<float>(maze.getCellSizeInPixels()) / 2);
     mShape.setFillColor(sf::Color::Red);
+    const auto pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
-        static_cast<float>(maze.getSrcCellNumber().x),
-        static_cast<float>(maze.getSrcCellNumber().y)
+        static_cast<float>(pixel.x),
+        static_cast<float>(pixel.y)
     );
 }
 
 void Entity::update() {
     const auto [oldX, oldY] = static_cast<sf::Vector2i>(mShape.getPosition());
-    const auto cellNum = Maze::pixelToCellNumber(oldX, oldY);
+    const auto cellNum = mMaze.pixelToCellNumber(oldX, oldY);
     const int geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
     const auto dX = geneticMoveInfo * States::pixelMovementSpeedScaler;
     const auto dY = geneticMoveInfo * States::pixelMovementSpeedScaler;

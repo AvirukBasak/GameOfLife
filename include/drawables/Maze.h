@@ -107,7 +107,9 @@ public:
      * @param pixelY Pixel y coordinate
      * @return - Location of the cell in mBoolMaze
      */
-    [[nodiscard]] static sf::Vector2i pixelToCellNumber(int pixelX, int pixelY);
+    [[nodiscard]] sf::Vector2i pixelToCellNumber(int pixelX, int pixelY) const;
+
+    [[nodiscard]] sf::Vector2i cellNumberToPixel(sf::Vector2i cellNumber) const;
 
     /**
      * Check if move to a new location is possible given current location and change in loaction.
@@ -146,7 +148,7 @@ public:
     /**
      * @return - The size (width & height) of any cell in pixels.
      */
-    [[nodiscard]] float getCellSizeInPixels() const;
+    [[nodiscard]] int getCellSizeInPixels() const;
 };
 
 #endif // CLASSES_MAZE_H

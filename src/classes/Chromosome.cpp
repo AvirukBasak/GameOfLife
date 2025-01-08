@@ -23,6 +23,13 @@ Chromosome::Chromosome(const Maze &maze)
 }
 
 Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf::Vector2i cellNum) const {
+    if (mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.count(cellNum) == 0) {
+        throw std::invalid_argument(std::string("Cell number [")
+            .append(std::to_string(cellNum.x))
+            .append(", ")
+            .append(std::to_string(cellNum.y))
+            .append("] not in chromosome map"));
+    }
     const auto geneLocation = mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.at(cellNum);
     return mChromoString[geneLocation];
 }

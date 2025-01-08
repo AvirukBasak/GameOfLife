@@ -177,11 +177,15 @@ void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     target.draw(sprite, states);
 }
 
-sf::Vector2i Maze::pixelToCellNumber(const int pixelX, const int pixelY) {
+sf::Vector2i Maze::pixelToCellNumber(const int pixelX, const int pixelY) const {
     // image size in pixels when loaded from file = mImgLoadSize
     // image size in pixels when drawn = mImgDrawSize
     // total cells per dimension of image / maze (x and y dirn) = CELLS_PER_DIMENSION
-    return {pixelX / CELLS_PER_DIMENSION, pixelY / CELLS_PER_DIMENSION};
+    return {pixelX / getCellSizeInPixels(), pixelY / getCellSizeInPixels()};
+}
+
+sf::Vector2i Maze::cellNumberToPixel(const sf::Vector2i cellNumber) const {
+    return {cellNumber.x * getCellSizeInPixels(), cellNumber.y * getCellSizeInPixels()};
 }
 
 bool Maze::isValidMoveInPixels(const int pixelX, const int pixelY, const int dx, const int dy) const {
@@ -213,9 +217,9 @@ sf::Vector2i Maze::getDestCellNumber() const {
     return {CELLS_PER_DIMENSION - 2, CELLS_PER_DIMENSION - 2};
 }
 
-float Maze::getCellSizeInPixels() const {
+int Maze::getCellSizeInPixels() const {
     // image size in pixels when loaded from file = mImgLoadSize
     // image size in pixels when drawn = mImgDrawSize
     // total cells per dimension of image / maze (x and y dirn) = CELLS_PER_DIMENSION
-    return static_cast<float>(mImgDrawSize) / CELLS_PER_DIMENSION;
+    return mImgDrawSize / CELLS_PER_DIMENSION;
 }

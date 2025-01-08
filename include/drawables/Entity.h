@@ -23,8 +23,8 @@ public:
      * This is in pixels and not in cells.
      */
     enum UnitMoveInPixels {
-        POSITIVE = +5,
-        NEGATIVE = -5,
+        POSITIVE = +1,
+        NEGATIVE = -1,
     };
 
     explicit Entity(const Maze &maze);

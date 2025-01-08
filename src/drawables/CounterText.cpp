@@ -17,7 +17,7 @@ std::string mkStrFromCount(const int count) {
 CounterText::CounterText(const int initialCount) : mCounter(initialCount) {
     const std::string fontpath = pathjoin({ASSETS_PATH, "fonts", "arial.ttf"});
     if (!mFont.loadFromFile(fontpath)) {
-        throw std::runtime_error("Failed to load '" + fontpath + "'");
+        throw std::runtime_error(std::string("Failed to load '").append(fontpath).append("'"));
     }
     mText.setFont(mFont);
     mText.setCharacterSize(20);
