@@ -27,7 +27,7 @@ public:
     void update();
 
     /**
-     * Runs 1/FPS times per second in game loop.
+     * Runs RENDER_FPS times per second in game loop.
      */
     void render() const;
 };
