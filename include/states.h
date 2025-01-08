@@ -11,6 +11,7 @@ public:
 
     static int simulationSpeedScaler;
     static int pixelMovementSpeedScaler;
+    static float mutationProbability;
 };
 
 #endif //STATES_H

@@ -106,6 +106,8 @@ ChromosmeFriend::ChromosmeFriend()
     : mWhiteCellCount(0), mCellNumberToGeneIndexMapping() {
 }
 
+EntityFriend::EntityFriend() = default;
+
 Maze::Maze(const int width, const int height)
     : mImgLoadSize(CELLS_PER_DIMENSION),
       mImgDrawSize(std::min(width, height)),

@@ -9,7 +9,12 @@
 #include "interfaces/IRenderable.h"
 
 class Entity final : public IRenderable {
-    Chromosome mChromosome;
+    const Maze &mMaze;
+
+    const Chromosome mChromosome;
+    sf::CircleShape mShape;
+
+    explicit Entity(const Maze &maze, Chromosome chromosome);
 
 public:
     /**
@@ -28,7 +33,11 @@ public:
 
     void update() override;
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+    std::pair<Entity, Entity> reproduce(const Entity &otherEntity) const;
+
+    void mutate();
 };
 
 #endif //CLASSES_ENTITY_H

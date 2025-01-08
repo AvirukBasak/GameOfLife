@@ -39,7 +39,7 @@ public:
      *                      If not given or exceeds chromosome length, all genes wll be mutated.
      * @return A new mutated chromosome.
      */
-    [[nodiscard]] Chromosome mutateRandom(int mutationCount = 0) const;
+    void mutateRandom(int mutationCount = 0);
 
     /**
      * Uses random single-point crossover strategy where a single random point is chosen

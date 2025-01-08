@@ -36,6 +36,14 @@ public:
     ChromosmeFriend();
 };
 
+class EntityFriend final {
+    friend class Maze;
+    friend class Entity;
+
+public:
+    EntityFriend();
+};
+
 class Maze final : public IRenderable {
     static constexpr int WORST_INVERSE_FITNESS = 999;
 
@@ -69,11 +77,8 @@ class Maze final : public IRenderable {
     sf::Image mImage;
 
 public:
-    /**
-     * Contains parameters that the class Chromosome needs.
-     * Is accessible only by classes Chromosome and Maze.
-     */
     ChromosmeFriend mChromosmeFriend;
+    EntityFriend mEntityFriend;
 
     /**
      * Number of cells a maze should have in one dimension.

@@ -27,10 +27,7 @@ Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf:
     return mChromoString[geneLocation];
 }
 
-Chromosome Chromosome::mutateRandom(int mutationCount) const {
-    // Create a copy of current chromosome
-    Chromosome mutated = *this;
-
+void Chromosome::mutateRandom(int mutationCount) {
     // If mutationCount is 0 or exceeds chromosome length, mutate all genes
     if (mutationCount <= 0 || mutationCount > mChromoString.size()) {
         mutationCount = static_cast<int>(mChromoString.size());
@@ -49,10 +46,8 @@ Chromosome Chromosome::mutateRandom(int mutationCount) const {
         // Generate a new random move
         const auto newMove = static_cast<GeneticMoveInfo>(moveDistrib(gen));
         // Apply mutation
-        mutated.mChromoString[position] = newMove;
+        this->mChromoString[position] = newMove;
     }
-
-    return mutated;
 }
 
 std::pair<Chromosome, Chromosome> Chromosome::crossoverSinglePoint(const Chromosome &other) const {
