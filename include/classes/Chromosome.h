@@ -5,7 +5,6 @@
 #ifndef CLASSES_CHROMOSOME_H
 #define CLASSES_CHROMOSOME_H
 
-#include <memory>
 #include <vector>
 
 #include "SFML/System/Vector2.hpp"
@@ -19,11 +18,11 @@ public:
     };
 
 private:
-    std::shared_ptr<Maze> mMazePtr;
+    const Maze &mMaze;
     std::vector<GeneticMoveInfo> mChromoString;
 
 public:
-    explicit Chromosome(const std::shared_ptr<Maze>& mazePtr);
+    explicit Chromosome(const Maze &maze);
 
     /**
      * Returns the drection or move the entity should take given the location

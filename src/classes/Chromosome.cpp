@@ -12,8 +12,8 @@
 static std::random_device rd;
 static std::mt19937 gen(rd());
 
-Chromosome::Chromosome(const std::shared_ptr<Maze> &mazePtr)
-    : mMazePtr(mazePtr), mChromoString(mazePtr->mChromosmeFriend.mWhiteCellCount) {
+Chromosome::Chromosome(const Maze &maze)
+    : mMaze(maze), mChromoString(maze.mChromosmeFriend.mWhiteCellCount) {
     // Initialize with random moves (8 possible moves)
     std::uniform_int_distribution<> distrib(0, 7);
 
@@ -23,7 +23,7 @@ Chromosome::Chromosome(const std::shared_ptr<Maze> &mazePtr)
 }
 
 Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf::Vector2i cellNum) const {
-    const auto geneLocation = mMazePtr->mChromosmeFriend.mCellNumberToGeneIndexMapping[cellNum];
+    const auto geneLocation = mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.at(cellNum);
     return mChromoString[geneLocation];
 }
 
@@ -56,7 +56,7 @@ Chromosome Chromosome::mutateRandom(int mutationCount) const {
 }
 
 std::pair<Chromosome, Chromosome> Chromosome::crossoverSinglePoint(const Chromosome &other) const {
-    Chromosome child1(this->mMazePtr), child2(this->mMazePtr);
+    Chromosome child1(this->mMaze), child2(this->mMaze);
 
     // Ensure children have same size as parents
     assert(child1.mChromoString.size() == this->mChromoString.size());
