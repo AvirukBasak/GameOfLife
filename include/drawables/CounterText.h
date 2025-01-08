@@ -13,16 +13,14 @@
 class CounterText final : public IRenderable {
     sf::Text mText;
     sf::Font mFont;
+    sf::Clock mClock;
     int mCounter;
 
 public:
     explicit CounterText(int initialCount = 0);
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-
     ~CounterText() override;
 
-    void incrementCount();
     void update() override;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

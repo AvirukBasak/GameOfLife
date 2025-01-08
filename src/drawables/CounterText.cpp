@@ -28,11 +28,14 @@ CounterText::CounterText(const int initialCount) : mCounter(initialCount) {
 
 CounterText::~CounterText() = default;
 
-void CounterText::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
-    target.draw(mText, states);
+void CounterText::update() {
+    if (mClock.getElapsedTime() >= sf::milliseconds(1000)) {
+        mCounter++;
+        mText.setString(mkStrFromCount(mCounter));
+        mClock.restart();
+    }
 }
 
-void CounterText::incrementCount() {
-    mCounter++;
-    mText.setString(mkStrFromCount(mCounter));
+void CounterText::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
+    target.draw(mText, states);
 }

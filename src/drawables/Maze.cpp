@@ -110,7 +110,7 @@ Maze::Maze(const int width, const int height)
     : mImgLoadSize(CELLS_PER_DIMENSION),
       mImgDrawSize(std::min(width, height)),
       mBoolMaze(CELLS_PER_DIMENSION, std::vector<bool>(CELLS_PER_DIMENSION, false)),
-      mFitnessMaze(CELLS_PER_DIMENSION, std::vector<int>(CELLS_PER_DIMENSION, WORST_FITNESS_VALUE)) {
+      mInverseFitnessMaze(CELLS_PER_DIMENSION, std::vector<int>(CELLS_PER_DIMENSION, WORST_INVERSE_FITNESS)) {
     /* Tasks:
      * - Load the IMGSIZE X IMGSIZE image Black / White image
      * - Set mBoolMaze values to mean of 4 channels of the image
@@ -140,10 +140,11 @@ Maze::Maze(const int width, const int height)
             }
             // If white image cell (or far enough from black in color)
             if (grayScale >= 64) {
-                mBoolMaze[i][j] = true;                 // Mark cell as true
-                mChromosmeFriend.mWhiteCellCount += 1;  // Increment count of white cells by 1
+                mBoolMaze[i][j] = true; // Mark cell as true
+                mChromosmeFriend.mWhiteCellCount += 1; // Increment count of white cells by 1
                 // Set mCellNumberToGeneIndexMapping for (j, i) i.e. (row, col) to the index of gene
-                mChromosmeFriend.mCellNumberToGeneIndexMapping[sf::Vector2i(j, i)] = mChromosmeFriend.mWhiteCellCount -1;
+                mChromosmeFriend.mCellNumberToGeneIndexMapping[sf::Vector2i(j, i)] =
+                        mChromosmeFriend.mWhiteCellCount - 1;
             }
         }
     }
@@ -153,7 +154,7 @@ Maze::Maze(const int width, const int height)
     assert(mBoolMaze[CELLS_PER_DIMENSION-2][CELLS_PER_DIMENSION-2]);
 
     // Fill the fitness matrix
-    fillFitnessMaze(mBoolMaze, mFitnessMaze);
+    fillFitnessMaze(mBoolMaze, mInverseFitnessMaze);
 }
 
 Maze::~Maze() = default;
@@ -181,7 +182,7 @@ sf::Vector2i Maze::pixelToCellNumber(const int pixelX, const int pixelY) {
     return {pixelX / CELLS_PER_DIMENSION, pixelY / CELLS_PER_DIMENSION};
 }
 
-bool Maze::isValidMoveInPixels(const int pixelX, const int pixelY, const UnitMove dx, const UnitMove dy) const {
+bool Maze::isValidMoveInPixels(const int pixelX, const int pixelY, const int dx, const int dy) const {
     const int newX = pixelX + dx;
     const int newY = pixelY + dy;
     const auto cellNum = pixelToCellNumber(newX, newY);
@@ -195,7 +196,7 @@ bool Maze::isCellNumberValid(sf::Vector2i cellNum) const {
 
 int Maze::getFitnessOfCellNumber(sf::Vector2i cellNum) const {
     const auto [j, i] = cellNum;
-    return WORST_FITNESS_VALUE - mFitnessMaze[i][j];
+    return WORST_INVERSE_FITNESS - mInverseFitnessMaze[i][j];
 }
 
 sf::Vector2i Maze::getSrcCellNumber() const {

@@ -36,29 +36,50 @@ public:
     ChromosmeFriend();
 };
 
-class Maze final : public sf::Drawable {
-    static constexpr int WORST_FITNESS_VALUE = 999;
 class Maze final : public IRenderable {
+    static constexpr int WORST_INVERSE_FITNESS = 999;
 
+    /**
+     * The size of the image when it is loaded, where each pixel corresponds to one cell.
+     * Thhis value should equal CELLS_PER_DIMENSION.
+     */
     int mImgLoadSize;
+
+    /**
+     * The dimensions the image should occupy when displayed in the UI.
+     * This is to be equal to min(width, height) of the window.
+     */
     int mImgDrawSize;
 
     /**
      * Maze - 0 means blocked or wall, 1 means open or path.
      */
     std::vector<std::vector<bool> > mBoolMaze;
-    std::vector<std::vector<int> > mFitnessMaze;
+
+    /**
+     * The inverse fitness of a chromosome that cannot move past a cell (row, col)
+     * is how far (in no. of cells) this cell is from the destination.
+     * The fitness is calculated by subtracting this inverse fitness from WORST_FITNESS_INVERSE.
+     */
+    std::vector<std::vector<int> > mInverseFitnessMaze;
+
+    /**
+     * The image to display for the maze. This is for UI purposes.
+     */
     sf::Image mImage;
 
 public:
+    /**
+     * Contains parameters that the class Chromosome needs.
+     * Is accessible only by classes Chromosome and Maze.
+     */
     ChromosmeFriend mChromosmeFriend;
 
+    /**
+     * Number of cells a maze should have in one dimension.
+     * A maze is always a square.
+     */
     static constexpr int CELLS_PER_DIMENSION = 60;
-
-    enum UnitMove {
-        POSITIVE = +5,
-        NEGATIVE = -5,
-    };
 
     /**
      * Create a new random maze. A maze object guarantees a
@@ -87,11 +108,11 @@ public:
      * Check if move to a new location is possible given current location and change in loaction.
      * @param pixelX Current pixel x value
      * @param pixelY Current pixel y value
-     * @param dx Change in x direction
-     * @param dy Chnage in y direction
+     * @param dx Change in x direction in pixels
+     * @param dy Chnage in y direction in pixels
      * @return - If new location is blocked, returns false
      */
-    [[nodiscard]] bool isValidMoveInPixels(int pixelX, int pixelY, UnitMove dx, UnitMove dy) const;
+    [[nodiscard]] bool isValidMoveInPixels(int pixelX, int pixelY, int dx, int dy) const;
 
     /**
      * Check if (i, j) is a valid cell number.
@@ -101,9 +122,9 @@ public:
     [[nodiscard]] bool isCellNumberValid(sf::Vector2i cellNum) const;
 
     /**
-     * Returns a fitness value in range of [0, 999]
+     * Returns a fitness value in range of [0, WORST_INVERSE_FITNESS]
      * @param cellNum  Cell number (x, y)
-     * @return Fitness value if an entity stops at cellNum. The higher the value, the better.
+     * @return Fitness value of an entity that stops at cellNum. The higher the fitness value, the better.
      */
     [[nodiscard]] int getFitnessOfCellNumber(sf::Vector2i cellNum) const;
 
