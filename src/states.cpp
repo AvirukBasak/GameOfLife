@@ -11,7 +11,6 @@
 #include "SFML/Graphics/Font.hpp"
 
 int States::simulationSpeedScaler = 1;
-int States::pixelMovementSpeedScaler = 1;
 float States::mutationProbability = 0.5;
 int States::entityCount = 10;
 sf::Font States::defaultFont;

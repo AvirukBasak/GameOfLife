@@ -12,7 +12,6 @@ public:
     States() = delete;
 
     static int simulationSpeedScaler;
-    static int pixelMovementSpeedScaler;
     static float mutationProbability;
     static int entityCount;
     static sf::Font defaultFont;

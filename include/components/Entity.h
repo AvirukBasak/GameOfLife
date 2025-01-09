@@ -14,6 +14,8 @@ class Entity final : public IGameComponent {
     const Chromosome mChromosome;
     sf::CircleShape mShape;
 
+    sf::Clock mEntityPosnUpdateClock;
+
     explicit Entity(const Maze &maze, Chromosome chromosome);
 
 public:
@@ -22,10 +24,13 @@ public:
      * The multiplier States::pixelMovementSpeedScaler is used to scale this to increase simultation speed.
      * This is in pixels and not in cells.
      */
-    enum UnitMoveInPixels {
-        POSITIVE = +1,
-        NEGATIVE = -1,
-    };
+    static constexpr int UNIT_MOVE_PIXEL_PER_SEC = 5;
+
+    /**
+     * How often update to enity position is to be done given that an
+     * entity moves UNIT_MOVE_PIXEL_PER_SEC pixels in a second.
+     */
+    static constexpr int ENTITY_UPDATE_INTERVAL_MS = 75;
 
     explicit Entity(const Maze &maze);
 

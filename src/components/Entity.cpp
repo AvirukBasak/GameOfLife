@@ -29,17 +29,58 @@ Entity::Entity(const Maze &maze, Chromosome chromosome)
         static_cast<float>(pixel.y)
     );
 }
+
 void Entity::handleEvent(const sf::Event &event) {
 }
 
 void Entity::update() {
-    const auto [oldX, oldY] = static_cast<sf::Vector2i>(mShape.getPosition());
-    const auto cellNum = mMaze.pixelToCellNumber(oldX, oldY);
-    const int geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
-    const auto dX = geneticMoveInfo * States::pixelMovementSpeedScaler;
-    const auto dY = geneticMoveInfo * States::pixelMovementSpeedScaler;
-    if (mMaze.isValidMoveInPixels(oldX, oldX, dX, dY)) {
-        mShape.setPosition(static_cast<float>(oldX), static_cast<float>(oldY));
+    // Update entity position every ENTITY_UPDATE_INTERVAL_MS ms
+    const sf::Time enityUpdateInterval = sf::milliseconds(ENTITY_UPDATE_INTERVAL_MS);
+    // In 1000 ms you move by UNIT_MOVE_PIXEL_PER_SEC, so we calculate move in each ENTITY_UPDATE_INTERVAL_MS ms
+    constexpr float movePerUpdateInterval = UNIT_MOVE_PIXEL_PER_SEC / 1000.0f * ENTITY_UPDATE_INTERVAL_MS;
+    if (mEntityPosnUpdateClock.getElapsedTime() >= enityUpdateInterval) {
+        const auto [oldX, oldY] = static_cast<sf::Vector2i>(mShape.getPosition());
+        const auto cellNum = mMaze.pixelToCellNumber(oldX, oldY);
+        const auto geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
+        float dX = 0, dY = 0;
+        switch (geneticMoveInfo) {
+            case Chromosome::UP:
+                dY = -movePerUpdateInterval;
+                break;
+            case Chromosome::DOWN:
+                dY = +movePerUpdateInterval;
+                break;
+            case Chromosome::LEFT:
+                dX = -movePerUpdateInterval;
+                break;
+            case Chromosome::RIGHT:
+                dX = +movePerUpdateInterval;
+                break;
+            case Chromosome::TOPLEFT:
+                dY = -movePerUpdateInterval;
+                dX = -movePerUpdateInterval;
+                break;
+            case Chromosome::TOPRIGHT:
+                dY = -movePerUpdateInterval;
+                dX = +movePerUpdateInterval;
+                break;
+            case Chromosome::BOTTOMLEFT:
+                dY = +movePerUpdateInterval;
+                dX = -movePerUpdateInterval;
+                break;
+            case Chromosome::BOTTOMRIGHT:
+                dY = +movePerUpdateInterval;
+                dX = +movePerUpdateInterval;
+                break;
+        }
+        dX *= States::simulationSpeedScaler;
+        dY *= States::simulationSpeedScaler;
+        if (mMaze.isValidMoveInPixels(oldX, oldX, dX, dY)) {
+            const auto newX = oldX + dX;
+            const auto newY = oldY + dY;
+            mShape.setPosition(newX, newY);
+        }
+        mEntityPosnUpdateClock.restart();
     }
 }
 
