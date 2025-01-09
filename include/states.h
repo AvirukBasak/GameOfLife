@@ -5,6 +5,8 @@
 #ifndef STATES_H
 #define STATES_H
 
+#include "SFML/Graphics/Font.hpp"
+
 class States final {
 public:
     States() = delete;
@@ -13,6 +15,9 @@ public:
     static int pixelMovementSpeedScaler;
     static float mutationProbability;
     static int entityCount;
+    static sf::Font defaultFont;
+
+    static void init();
 };
 
 #endif //STATES_H

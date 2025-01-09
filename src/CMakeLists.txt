@@ -1,6 +1,7 @@
 add_executable(GameeOfLife
-        globals.cpp
+        constants.cpp
         states.cpp
+        utils.cpp
         classes/Chromosome.cpp
         classes/Game.cpp
         components/CounterText.cpp

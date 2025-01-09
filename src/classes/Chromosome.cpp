@@ -2,11 +2,11 @@
 // Created by aviruk on 1/8/25.
 //
 
-#include "classes/Chromosome.h"
-
 #include <random>
 #include <algorithm>
 #include <cassert>
+
+#include "classes/Chromosome.h"
 
 // Random number generation setup (see https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution)
 static std::random_device rd;

@@ -5,14 +5,11 @@
 #ifndef CLASSES_COUNTERTEXT_H
 #define CLASSES_COUNTERTEXT_H
 
-#include "SFML/Graphics.hpp"
-#include "SFML/Graphics/Drawable.hpp"
-
+#include <SFML/Graphics.hpp>
 #include "interfaces/IGameComponent.h"
 
 class CounterText final : public IGameComponent {
     sf::Text mText;
-    sf::Font mFont;
     sf::Clock mClock;
     int mCounter;
 

@@ -10,7 +10,9 @@
 #include <iostream>
 #include <iomanip>
 
-#include "globals.h"
+#include "constants.h"
+#include "utils.h"
+#include "states.h"
 #include "components/Maze.h"
 
 template<typename T>
@@ -120,8 +122,8 @@ Maze::Maze(const int width, const int height)
      * - Set mWidth and mHeight
      */
     // load image from file
-    mImage.loadFromFile(pathjoin({
-        ASSETS_PATH, "blueprint", "maze.png"
+    mImage.loadFromFile(Utils::pathjoin({
+        Constants::ASSETS_PATH, "blueprint", "maze.png"
     }));
     assert(mImage.getSize().x == Maze::CELLS_PER_DIMENSION);
     assert(mImage.getSize().y == Maze::CELLS_PER_DIMENSION);
@@ -157,11 +159,26 @@ Maze::Maze(const int width, const int height)
 
     // Fill the fitness matrix
     fillFitnessMaze(mBoolMaze, mInverseFitnessMaze);
+
+    // Set up other drawable components
+    mCellFitnessTolltip.setFont(States::defaultFont);
+    mCellFitnessTolltip.setCharacterSize(15);
+    mCellFitnessTolltip.setFillColor(sf::Color::White);
 }
 
 Maze::~Maze() = default;
 
 void Maze::handleEvent(const sf::Event &event) {
+    if (event.type == sf::Event::MouseMoved) {
+        const auto [x, y] = event.mouseMove;
+        const auto cellNum = this->pixelToCellNumber(x, y);
+        if (this->isCellNumberValid(cellNum)) {
+            const auto fitness = this->getFitnessOfCellNumber(cellNum);
+            mCellFitnessTolltip.setString(std::string("Fitness: ").append(std::to_string(fitness)));
+        } else {
+            mCellFitnessTolltip.setString("");
+        }
+    }
 }
 
 void Maze::update() {
@@ -178,6 +195,10 @@ void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     sprite.setScale(sf::Vector2f(targetSize.x / spriteBounds.width, targetSize.y / spriteBounds.height));
 
     target.draw(sprite, states);
+
+    if (mCellFitnessTolltip.getString() != "") {
+        target.draw(mCellFitnessTolltip, states);
+    }
 }
 
 sf::Vector2i Maze::pixelToCellNumber(const int pixelX, const int pixelY) const {

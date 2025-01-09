@@ -8,8 +8,6 @@
 #include "components/Maze.h"
 #include "components/Entity.h"
 
-#include <iostream>
-
 Entity::Entity(const Maze &maze)
     : mMaze(maze), mChromosome(maze) {
     mShape.setRadius(static_cast<float>(maze.getCellSizeInPixels()) / 4);

@@ -2,12 +2,13 @@
 // Created by aviruk on 1/6/25.
 //
 
-#include "globals.h"
+#include "constants.h"
 #include "states.h"
 #include "classes/Game.h"
 #include "components/Entity.h"
 
-Game::Game(sf::RenderWindow &window) : mWindow(window), mMaze(WINDOW_WIDTH, WINDOW_HEIGHT),
+Game::Game(sf::RenderWindow &window) : mWindow(window),
+                                       mMaze(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT),
                                        mCounterText(0) {
     for (int i = 0; i < States::entityCount; ++i) {
         mEntities.emplace_back(mMaze);
@@ -35,7 +36,7 @@ void Game::update() {
 void Game::render() const {
     mWindow.clear(sf::Color::Black);
     mWindow.draw(mMaze);
-    for (const auto& e: mEntities) {
+    for (const auto &e: mEntities) {
         mWindow.draw(e);
     }
     mWindow.draw(mCounterText);

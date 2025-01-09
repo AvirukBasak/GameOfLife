@@ -76,6 +76,11 @@ class Maze final : public IGameComponent {
      */
     sf::Image mImage;
 
+    /**
+     * Show a tolltip with cell fitness value on hover over the cell.
+     */
+    sf::Text mCellFitnessTolltip;
+
 public:
     ChromosmeFriend mChromosmeFriend;
     EntityFriend mEntityFriend;
