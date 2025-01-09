@@ -3,9 +3,9 @@ add_executable(GameeOfLife
         states.cpp
         classes/Chromosome.cpp
         classes/Game.cpp
-        drawables/CounterText.cpp
-        drawables/Entity.cpp
-        drawables/Maze.cpp
+        components/CounterText.cpp
+        components/Entity.cpp
+        components/Maze.cpp
 )
 
 # add_subdirectory(subdir)

@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "states.h"
 #include "classes/Game.h"
-#include "drawables/Entity.h"
+#include "components/Entity.h"
 
 Game::Game(sf::RenderWindow &window) : mWindow(window), mMaze(WINDOW_WIDTH, WINDOW_HEIGHT),
                                        mCounterText(0) {
@@ -15,6 +15,14 @@ Game::Game(sf::RenderWindow &window) : mWindow(window), mMaze(WINDOW_WIDTH, WIND
 }
 
 Game::~Game() = default;
+
+void Game::handleEvent(const sf::Event &event) {
+    mMaze.handleEvent(event);
+    for (auto e: mEntities) {
+        e.handleEvent(event);
+    }
+    mCounterText.handleEvent(event);
+}
 
 void Game::update() {
     mMaze.update();

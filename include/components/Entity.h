@@ -6,9 +6,9 @@
 #define CLASSES_ENTITY_H
 
 #include "classes/Chromosome.h"
-#include "interfaces/IRenderable.h"
+#include "interfaces/IGameComponent.h"
 
-class Entity final : public IRenderable {
+class Entity final : public IGameComponent {
     const Maze &mMaze;
 
     const Chromosome mChromosome;
@@ -30,6 +30,8 @@ public:
     explicit Entity(const Maze &maze);
 
     ~Entity() override;
+
+    void handleEvent(const sf::Event &event) override;
 
     void update() override;
 

@@ -1,5 +1,3 @@
-#include <sstream>
-
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 
@@ -19,13 +17,12 @@ int main() {
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
-            switch (event.type) {
-                case sf::Event::Closed:
-                    window.close();
-                    return 0;
-                default:
-                    break;
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                return 0;
             }
+
+            game.handleEvent(event);
         }
 
         game.update();

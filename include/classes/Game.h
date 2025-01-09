@@ -7,9 +7,9 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "drawables/Entity.h"
-#include "drawables/Maze.h"
-#include "drawables/CounterText.h"
+#include "components/Entity.h"
+#include "components/Maze.h"
+#include "components/CounterText.h"
 
 class Game {
     sf::RenderWindow &mWindow;
@@ -22,6 +22,13 @@ public:
     explicit Game(sf::RenderWindow &window);
 
     ~Game();
+
+    /**
+     * Receives an event from main method using window.pollEvent.
+     * All IGameComponent components receive every event.
+     * @param event An event that needs to be handled.
+     */
+    void handleEvent(const sf::Event &event);
 
     /**
      * Runs on every iteration of game loop

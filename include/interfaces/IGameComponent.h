@@ -7,9 +7,16 @@
 
 #include <SFML/Graphics.hpp>
 
-class IRenderable : public sf::Drawable {
+class IGameComponent : public sf::Drawable {
 public:
-    ~IRenderable() override = default;
+    ~IGameComponent() override = default;
+
+    /**
+     * Receives an event from Game class.
+     * All IGameComponent components receive every event.
+     * @param event An event that needs to be handled.
+     */
+    virtual void handleEvent(const sf::Event &event) = 0;
 
     /**
      * Runs on every iteration of game loop

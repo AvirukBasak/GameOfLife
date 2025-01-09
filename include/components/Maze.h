@@ -11,7 +11,7 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Image.hpp"
 
-#include "interfaces/IRenderable.h"
+#include "interfaces/IGameComponent.h"
 
 template<>
 struct std::hash<sf::Vector2<int32_t> > {
@@ -44,7 +44,7 @@ public:
     EntityFriend();
 };
 
-class Maze final : public IRenderable {
+class Maze final : public IGameComponent {
     static constexpr int WORST_INVERSE_FITNESS = 999;
 
     /**
@@ -96,6 +96,8 @@ public:
     explicit Maze(int width, int height);
 
     ~Maze() override;
+
+    void handleEvent(const sf::Event &event) override;
 
     void update() override;
 

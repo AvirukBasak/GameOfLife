@@ -11,7 +11,7 @@
 #include <iomanip>
 
 #include "globals.h"
-#include "drawables/Maze.h"
+#include "components/Maze.h"
 
 template<typename T>
 void printMatrix(const std::vector<std::vector<T> > &matrix, const std::string &name) {
@@ -160,6 +160,9 @@ Maze::Maze(const int width, const int height)
 }
 
 Maze::~Maze() = default;
+
+void Maze::handleEvent(const sf::Event &event) {
+}
 
 void Maze::update() {
 }

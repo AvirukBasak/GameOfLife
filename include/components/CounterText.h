@@ -8,9 +8,9 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Drawable.hpp"
 
-#include "interfaces/IRenderable.h"
+#include "interfaces/IGameComponent.h"
 
-class CounterText final : public IRenderable {
+class CounterText final : public IGameComponent {
     sf::Text mText;
     sf::Font mFont;
     sf::Clock mClock;
@@ -20,6 +20,8 @@ public:
     explicit CounterText(int initialCount = 0);
 
     ~CounterText() override;
+
+    void handleEvent(const sf::Event &event) override;
 
     void update() override;
 

@@ -5,8 +5,8 @@
 #include <random>
 
 #include "states.h"
-#include "drawables/Maze.h"
-#include "drawables/Entity.h"
+#include "components/Maze.h"
+#include "components/Entity.h"
 
 #include <iostream>
 
@@ -30,6 +30,8 @@ Entity::Entity(const Maze &maze, Chromosome chromosome)
         static_cast<float>(pixel.x),
         static_cast<float>(pixel.y)
     );
+}
+void Entity::handleEvent(const sf::Event &event) {
 }
 
 void Entity::update() {

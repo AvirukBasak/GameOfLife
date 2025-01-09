@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "globals.h"
-#include "drawables/CounterText.h"
+#include "components/CounterText.h"
 
 std::string mkStrFromCount(const int count) {
     std::stringstream ss;
@@ -27,6 +27,9 @@ CounterText::CounterText(const int initialCount) : mCounter(initialCount) {
 }
 
 CounterText::~CounterText() = default;
+
+void CounterText::handleEvent(const sf::Event &event) {
+}
 
 void CounterText::update() {
     if (mClock.getElapsedTime() >= sf::milliseconds(1000)) {

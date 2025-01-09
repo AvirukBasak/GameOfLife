@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "SFML/System/Vector2.hpp"
-#include "drawables/Maze.h"
+#include "components/Maze.h"
 
 class Chromosome {
 public:
