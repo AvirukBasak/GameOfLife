@@ -10,10 +10,10 @@ This project was developed and tested on Linux (Ubuntu 24.04) so the following g
 You need to build this project with `CMake` with GCC as the compiler (had issues with Clang).
 Ideally, you'll want CLion as an IDE but is not important.
 You may be asked at every step to install a few libraries which you can with your distro package manager if possible.
-If you are having dependecy issues, or do not have said library versions in the distro package registry, change the SFML version at `dependencies/CMakeLists.txt` and see if it helps.
+If you are having dependency issues, or do not have said library versions in the distro package registry, change the SFML version at `dependencies/CMakeLists.txt` and see if it helps.
 
 If you are not able to setup still, delete `dependecies/` and remove the line `add_subdirectory(dependencies)` from `/CMakeLists.txt`. Install SFML using your package manager and see if the project compiles.
-If you are using an older version of SFML, you'll need to change the source code of this project to fit with the API.
+If you are using an older (or newer) version of SFML, you may need to change the source code of this project to fit with the API.
 
 ## Screenshots
 ### Window
