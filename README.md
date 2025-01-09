@@ -14,3 +14,10 @@ If you are having dependecy issues, or do not have said library versions in the 
 
 If you are not able to setup still, delete `dependecies/` and remove the line `add_subdirectory(dependencies)` from `/CMakeLists.txt`. Install SFML using your package manager and see if the project compiles.
 If you are using an older version of SFML, you'll need to change the source code of this project to fit with the API.
+
+## Screenshots
+### Window
+![Screenshot from 2025-01-10 00-46-34](https://github.com/user-attachments/assets/699e246c-513f-4c89-8818-ee735f4d0085)
+
+### Fitness Function
+![Screenshot from 2025-01-10 00-48-04](https://github.com/user-attachments/assets/6f732ffe-f17d-479f-8b2c-54262f17c103)
