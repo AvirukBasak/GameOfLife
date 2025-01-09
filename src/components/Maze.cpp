@@ -161,9 +161,19 @@ Maze::Maze(const int width, const int height)
     fillFitnessMaze(mBoolMaze, mInverseFitnessMaze);
 
     // Set up other drawable components
-    mCellFitnessTolltip.setFont(States::defaultFont);
-    mCellFitnessTolltip.setCharacterSize(15);
-    mCellFitnessTolltip.setFillColor(sf::Color::White);
+    mCellFitnessTolltipText.setFont(States::defaultFont);
+    mCellFitnessTolltipText.setCharacterSize(15);
+    mCellFitnessTolltipText.setFillColor(sf::Color::Black);
+
+    mCellFitnessToltipRect.setFillColor(sf::Color::Yellow);
+    mCellFitnessToltipRect.setOutlineColor(sf::Color::Black);
+    mCellFitnessToltipRect.setOutlineThickness(1);
+    // Padding of 3 size
+    mCellFitnessToltipRect.setSize(sf::Vector2f(2 * 3 + 100, 2 * 3 + 18));
+
+    mCellIndicatorRect.setFillColor(sf::Color::Transparent);
+    mCellIndicatorRect.setOutlineColor(sf::Color::Red);
+    mCellIndicatorRect.setOutlineThickness(1);
 }
 
 Maze::~Maze() = default;
@@ -172,11 +182,18 @@ void Maze::handleEvent(const sf::Event &event) {
     if (event.type == sf::Event::MouseMoved) {
         const auto [x, y] = event.mouseMove;
         const auto cellNum = this->pixelToCellNumber(x, y);
-        if (this->isCellNumberValid(cellNum)) {
+        if (this->isCellNumberValid(cellNum) && mBoolMaze[cellNum.y][cellNum.x]) {
             const auto fitness = this->getFitnessOfCellNumber(cellNum);
-            mCellFitnessTolltip.setString(std::string("Fitness: ").append(std::to_string(fitness)));
+            // Calculate the fitness data and set component params
+            mCellFitnessTolltipText.setString(std::string("Fitness: ").append(fitness ? std::to_string(fitness) : "Null"));
+            mCellFitnessToltipRect.setPosition(static_cast<float>(x + 7), static_cast<float>(y + 7));
+            mCellFitnessTolltipText.setPosition(static_cast<float>(x + 7 + 3 + 9), static_cast<float>(y + 7 + 2));
+            // Highlight the cell being hovered on
+            const auto pixel = this->cellNumberToPixel(cellNum);
+            mCellIndicatorRect.setPosition(static_cast<float>(pixel.x +1), static_cast<float>(pixel.y +1));
+            mCellIndicatorRect.setSize(sf::Vector2f(sf::Vector2i(this->getCellSizeInPixels() -2, this->getCellSizeInPixels() -2)));
         } else {
-            mCellFitnessTolltip.setString("");
+            mCellFitnessTolltipText.setString("");
         }
     }
 }
@@ -196,8 +213,10 @@ void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
 
     target.draw(sprite, states);
 
-    if (mCellFitnessTolltip.getString() != "") {
-        target.draw(mCellFitnessTolltip, states);
+    if (mCellFitnessTolltipText.getString() != "") {
+        target.draw(mCellIndicatorRect, states);
+        target.draw(mCellFitnessToltipRect, states);
+        target.draw(mCellFitnessTolltipText, states);
     }
 }
 
