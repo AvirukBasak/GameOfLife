@@ -46,8 +46,8 @@ class Maze final : public IGameComponent {
     static constexpr int WORST_INVERSE_FITNESS = 999;
     static constexpr int TOOLTIP_OFFSET = 8;
     static constexpr int TOOLTIP_PADDING = 5;
-    static constexpr int TOOLTIP_WIDTH = 184;
-    static constexpr int TOOLTIP_HEIGHT = 90;
+    static constexpr int TOOLTIP_WIDTH = 185;
+    static constexpr int TOOLTIP_HEIGHT = 91;
 
     /**
      * The size of the image when it is loaded, where each pixel corresponds to one cell.
