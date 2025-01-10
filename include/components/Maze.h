@@ -124,13 +124,14 @@ public:
 
     /**
      * Check if move to a new location is possible given current location and change in loaction.
+     * @param yourSize The size (from end to end) of the Entity that wants to move.
      * @param pixelX Current pixel x value
      * @param pixelY Current pixel y value
      * @param dx Change in x direction in pixels
      * @param dy Chnage in y direction in pixels
      * @return - If new location is blocked, returns false
      */
-    [[nodiscard]] bool isValidMoveInPixels(float pixelX, float pixelY, float dx, float dy) const;
+    [[nodiscard]] bool isValidMoveInPixels(float yourSize, float pixelX, float pixelY, float dx, float dy) const;
 
     /**
      * Check if (i, j) is a valid cell number.

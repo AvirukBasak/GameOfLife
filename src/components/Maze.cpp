@@ -265,11 +265,14 @@ sf::Vector2f Maze::cellNumberToPixel(const sf::Vector2i cellNumber) const {
     };
 }
 
-bool Maze::isValidMoveInPixels(const float pixelX, const float pixelY, const float dx, const float dy) const {
+bool Maze::isValidMoveInPixels(const float yourSize, const float pixelX, const float pixelY, const float dx,
+                               const float dy) const {
     const float newX = pixelX + dx;
     const float newY = pixelY + dy;
-    const sf::Vector2i cellNum = pixelToCellNumber(newX, newY);
-    return isCellNumberValid(cellNum) && true == mBoolMaze[cellNum.y][cellNum.x];
+    const sf::Vector2i cellNumForEntityTL = pixelToCellNumber(newX, newY);
+    const sf::Vector2i cellNumForEntityBR = pixelToCellNumber(newX + yourSize, newY + yourSize);
+    return isCellNumberValid(cellNumForEntityTL) && true == mBoolMaze[cellNumForEntityTL.y][cellNumForEntityTL.x]
+           && isCellNumberValid(cellNumForEntityBR) && true == mBoolMaze[cellNumForEntityBR.y][cellNumForEntityBR.x];
 }
 
 bool Maze::isCellNumberValid(sf::Vector2i cellNum) const {
