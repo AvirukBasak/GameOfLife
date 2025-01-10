@@ -1,4 +1,4 @@
-add_executable(GameeOfLife
+add_executable(${PROJECT_NAME}
         constants.cpp
         states.cpp
         utils.cpp
@@ -11,5 +11,5 @@ add_executable(GameeOfLife
 
 # add_subdirectory(subdir)
 
-target_sources(GameeOfLife PUBLIC main.cpp)
-target_link_libraries(GameeOfLife PRIVATE sfml-graphics)
+target_sources(${PROJECT_NAME} PUBLIC main.cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
