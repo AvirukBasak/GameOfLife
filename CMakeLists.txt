@@ -4,7 +4,15 @@ project(GameOfLife
         VERSION 1.0
 )
 
-include_directories(include)
+include_directories(
+        include
+        thirdparty/include
+)
+
+add_executable(${PROJECT_NAME})
 
 add_subdirectory(dependencies)
+add_subdirectory(thirdparty)
 add_subdirectory(src)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics GL)
