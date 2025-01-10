@@ -15,7 +15,7 @@ static std::mt19937 gen(rd());
 Chromosome::Chromosome(const Maze &maze)
     : mMaze(maze), mChromoString(maze.mChromosmeFriend.mWhiteCellCount) {
     // Initialize with random moves (8 possible moves)
-    std::uniform_int_distribution<> distrib(0, 7);
+    std::uniform_int_distribution<> distrib(1, 8);
 
     for (GeneticMoveInfo &gene: mChromoString) {
         gene = (GeneticMoveInfo) distrib(gen);
@@ -24,11 +24,7 @@ Chromosome::Chromosome(const Maze &maze)
 
 Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf::Vector2i cellNum) const {
     if (mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.count(cellNum) == 0) {
-        throw std::invalid_argument(std::string("Cell number [")
-            .append(std::to_string(cellNum.x))
-            .append(", ")
-            .append(std::to_string(cellNum.y))
-            .append("] not in chromosome map"));
+        return STOP;
     }
     const int geneLocation = mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.at(cellNum);
     return mChromoString[geneLocation];
@@ -41,7 +37,7 @@ void Chromosome::mutateRandom(int mutationCount) {
     }
 
     // Create a uniform distribution for selecting random moves
-    std::uniform_int_distribution<> moveDistrib(0, 7);
+    std::uniform_int_distribution<> moveDistrib(1, 8);
 
     // Create a uniform distribution for selecting gene positions
     std::uniform_int_distribution<> positionDistrib(0, mChromoString.size() - 1);

@@ -13,8 +13,8 @@
 class Chromosome {
 public:
     enum GeneticMoveInfo {
-        UP = 0, DOWN, LEFT, RIGHT,
-        TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT = 7
+        STOP = 0, UP, DOWN, LEFT, RIGHT,
+        TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT
     };
 
 private:
