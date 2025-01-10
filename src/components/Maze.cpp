@@ -27,9 +27,9 @@ void printMatrix(const std::vector<std::vector<T> > &matrix, const std::string &
                 }
             } else {
                 if (false == cell) {
-                    std::cout << "\u2588";
+                    std::cout << "\u2588\u2588";
                 } else {
-                    std::cout << " ";
+                    std::cout << "  ";
                 }
             }
         }
@@ -101,7 +101,7 @@ void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vect
 
     // Print matrix
     // printMatrix(mBoolMaze, "mBoolMaze");
-    printMatrix(mFitnessMaze, "mFitnessMaze");
+    // printMatrix(mFitnessMaze, "mFitnessMaze");
 }
 
 ChromosmeFriend::ChromosmeFriend()
