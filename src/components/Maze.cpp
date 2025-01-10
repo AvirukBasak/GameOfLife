@@ -128,10 +128,9 @@ Maze::Maze(const int width, const int height)
     assert(mImage.getSize().x == Maze::CELLS_PER_DIMENSION);
     assert(mImage.getSize().y == Maze::CELLS_PER_DIMENSION);
 
-    // load pixels into array or size
-    sf::Uint8 pixelArr[CELLS_PER_DIMENSION][CELLS_PER_DIMENSION][4];
-    std::memcpy(pixelArr, mImage.getPixelsPtr(), sizeof(pixelArr));
-    assert(pixelArr);
+    // load pixels as an array
+    using PixelArray = sf::Uint8[CELLS_PER_DIMENSION][CELLS_PER_DIMENSION][4];
+    const PixelArray &pixelArr = *reinterpret_cast<const PixelArray *>(mImage.getPixelsPtr());
 
     /* load the image information into mBoolMaze vector by taking mean of 4 mage channels
      * and using a threshold to set tru or false */
