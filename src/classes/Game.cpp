@@ -19,7 +19,7 @@ Game::~Game() = default;
 
 void Game::handleEvent(const sf::Event &event) {
     mMaze.handleEvent(event);
-    for (auto e: mEntities) {
+    for (Entity &e: mEntities) {
         e.handleEvent(event);
     }
     mCounterText.handleEvent(event);
@@ -27,7 +27,7 @@ void Game::handleEvent(const sf::Event &event) {
 
 void Game::update() {
     mMaze.update();
-    for (auto e: mEntities) {
+    for (Entity &e: mEntities) {
         e.update();
     }
     mCounterText.update();
@@ -36,7 +36,7 @@ void Game::update() {
 void Game::render() const {
     mWindow.clear(sf::Color::Black);
     mWindow.draw(mMaze);
-    for (const auto &e: mEntities) {
+    for (const Entity &e: mEntities) {
         mWindow.draw(e);
     }
     mWindow.draw(mCounterText);
