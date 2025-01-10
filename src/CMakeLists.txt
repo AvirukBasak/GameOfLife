@@ -10,8 +10,6 @@ target_sources(${PROJECT_NAME}
         components/Entity.cpp
         components/Maze.cpp
         components/ControlPanel.cpp
-        components/TextInput.cpp
 )
 
 # add_subdirectory(subdir)
-

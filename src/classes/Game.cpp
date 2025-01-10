@@ -18,27 +18,32 @@ Game::Game(sf::RenderWindow &window) : mWindow(window),
 Game::~Game() = default;
 
 void Game::handleEvent(const sf::Event &event) {
+    mCounterText.handleEvent(event);
+    mControlPanel.handleEvent(event);
     mMaze.handleEvent(event);
     for (Entity &e: mEntities) {
         e.handleEvent(event);
     }
-    mCounterText.handleEvent(event);
 }
 
 void Game::update() {
+    mCounterText.update();
+    mControlPanel.update();
     mMaze.update();
     for (Entity &e: mEntities) {
         e.update();
     }
-    mCounterText.update();
 }
 
 void Game::render() const {
     mWindow.clear(sf::Color::Black);
+
+    mWindow.draw(mCounterText);
+    mWindow.draw(mControlPanel);
     mWindow.draw(mMaze);
     for (const Entity &e: mEntities) {
         mWindow.draw(e);
     }
-    mWindow.draw(mCounterText);
+
     mWindow.display();
 }

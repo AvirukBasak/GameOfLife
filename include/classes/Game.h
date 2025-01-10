@@ -5,6 +5,8 @@
 #ifndef CLASSES_GAME_H
 #define CLASSES_GAME_H
 
+#include <components/ControlPanel.h>
+
 #include "SFML/Graphics.hpp"
 
 #include "components/Entity.h"
@@ -16,6 +18,7 @@ class Game {
 
     Maze mMaze;
     CounterText mCounterText;
+    ControlPanel mControlPanel;
     std::vector<Entity> mEntities{};
 
 public:

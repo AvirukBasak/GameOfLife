@@ -5,12 +5,20 @@
 #ifndef COMPONENTS_CONTROLPANEL_H
 #define COMPONENTS_CONTROLPANEL_H
 
+#include "interfaces/IGameComponent.h"
 
+class ControlPanel final : public IGameComponent {
 
-class ControlPanel {
+public:
+    ControlPanel();
 
+    ~ControlPanel() override;
+
+    void handleEvent(const sf::Event &event) override;
+
+    void update() override;
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
-
-
 
 #endif //COMPONENTS_CONTROLPANEL_H
