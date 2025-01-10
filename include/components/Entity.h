@@ -2,8 +2,8 @@
 // Created by aviruk on 1/4/25.
 //
 
-#ifndef CLASSES_ENTITY_H
-#define CLASSES_ENTITY_H
+#ifndef COMPONENTS_ENTITY_H
+#define COMPONENTS_ENTITY_H
 
 #include "classes/Chromosome.h"
 #include "interfaces/IGameComponent.h"
@@ -51,4 +51,4 @@ public:
     void mutate();
 };
 
-#endif //CLASSES_ENTITY_H
+#endif //COMPONENTS_ENTITY_H

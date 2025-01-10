@@ -2,8 +2,8 @@
 // Created by aviruk on 1/4/25.
 //
 
-#ifndef CLASSES_MAZE_H
-#define CLASSES_MAZE_H
+#ifndef COMPONENTS_MAZE_H
+#define COMPONENTS_MAZE_H
 
 #include <unordered_map>
 #include <vector>
@@ -163,4 +163,4 @@ public:
     [[nodiscard]] float getCellSizeInPixels() const;
 };
 
-#endif // CLASSES_MAZE_H
+#endif // COMPONENTS_MAZE_H

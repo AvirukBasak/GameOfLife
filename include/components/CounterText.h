@@ -2,8 +2,8 @@
 // Created by aviruk on 1/6/25.
 //
 
-#ifndef CLASSES_COUNTERTEXT_H
-#define CLASSES_COUNTERTEXT_H
+#ifndef COMPONENTS_COUNTERTEXT_H
+#define COMPONENTS_COUNTERTEXT_H
 
 #include <SFML/Graphics.hpp>
 #include "interfaces/IGameComponent.h"
@@ -25,4 +25,4 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 
-#endif //CLASSES_COUNTERTEXT_H
+#endif //COMPONENTS_COUNTERTEXT_H
