@@ -3,13 +3,14 @@
 //
 
 #include <random>
+#include <iostream>
 
 #include "states.h"
 #include "components/Maze.h"
 #include "components/Entity.h"
 
-Entity::Entity(const Maze &maze)
-    : mMaze(maze), mChromosome(maze) {
+Entity::Entity(int id, const Maze &maze)
+    : mId(id), mHasStopped(false), mMaze(maze), mChromosome(maze) {
     mShape.setRadius(maze.getCellSizeInPixels() / 4);
     mShape.setFillColor(sf::Color::Red);
     const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
@@ -20,8 +21,8 @@ Entity::Entity(const Maze &maze)
     mPosition = mShape.getPosition();
 };
 
-Entity::Entity(const Maze &maze, Chromosome chromosome)
-    : mMaze(maze), mChromosome(std::move(chromosome)) {
+Entity::Entity(int id, const Maze &maze, Chromosome chromosome)
+    : mId(id), mHasStopped(false), mMaze(maze), mChromosome(std::move(chromosome)) {
     mShape.setRadius(maze.getCellSizeInPixels() / 2);
     mShape.setFillColor(sf::Color::Red);
     const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
@@ -74,6 +75,14 @@ void Entity::update() {
                 dY = +movePerUpdateInterval;
                 dX = +movePerUpdateInterval;
                 break;
+            case Chromosome::STOP:
+                if (!mHasStopped) {
+                    std::cerr << "Stopped Entity[" << mId << "] at position: ["
+                            << mPosition.x << ", " << mPosition.y << "]"
+                            << std::endl;
+                    mHasStopped = true;
+                }
+                break;
         }
         dX *= States::simulationSpeedScaler;
         dY *= States::simulationSpeedScaler;
@@ -108,7 +117,10 @@ std::pair<Entity, Entity> Entity::reproduce(const Entity &otherEntity) const {
         chr2.mutateRandom();
     }
 
-    return {Entity(this->mMaze, chr1), Entity(this->mMaze, chr2)};
+    return {
+        Entity(this->mId, this->mMaze, chr1),
+        Entity(otherEntity.mId, this->mMaze, chr2)
+    };
 }
 
 Entity::~Entity() = default;

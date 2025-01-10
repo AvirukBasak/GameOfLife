@@ -9,6 +9,7 @@
 #include "interfaces/IGameComponent.h"
 
 class Entity final : public IGameComponent {
+    const int mId;
     const Maze &mMaze;
 
     const Chromosome mChromosome;
@@ -17,7 +18,9 @@ class Entity final : public IGameComponent {
 
     sf::Clock mEntityPosnUpdateClock;
 
-    explicit Entity(const Maze &maze, Chromosome chromosome);
+    bool mHasStopped;
+
+    explicit Entity(int id, const Maze &maze, Chromosome chromosome);
 
 public:
     /**
@@ -33,7 +36,7 @@ public:
      */
     static constexpr int ENTITY_UPDATE_INTERVAL_MS = 75;
 
-    explicit Entity(const Maze &maze);
+    explicit Entity(int id, const Maze &maze);
 
     ~Entity() override;
 

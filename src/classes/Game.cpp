@@ -11,7 +11,7 @@ Game::Game(sf::RenderWindow &window) : mWindow(window),
                                        mMaze(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT),
                                        mCounterText(0) {
     for (int i = 0; i < States::entityCount; ++i) {
-        mEntities.emplace_back(mMaze);
+        mEntities.emplace_back(i, mMaze);
     }
 }
 
