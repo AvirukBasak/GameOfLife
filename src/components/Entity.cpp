@@ -12,7 +12,7 @@ Entity::Entity(const Maze &maze)
     : mMaze(maze), mChromosome(maze) {
     mShape.setRadius(maze.getCellSizeInPixels() / 4);
     mShape.setFillColor(sf::Color::Red);
-    const auto pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
+    const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
         pixel.x,
         pixel.y
@@ -24,7 +24,7 @@ Entity::Entity(const Maze &maze, Chromosome chromosome)
     : mMaze(maze), mChromosome(std::move(chromosome)) {
     mShape.setRadius(maze.getCellSizeInPixels() / 2);
     mShape.setFillColor(sf::Color::Red);
-    const auto pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
+    const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
         pixel.x,
         pixel.y
@@ -42,8 +42,8 @@ void Entity::update() {
     constexpr float movePerUpdateInterval = UNIT_MOVE_PIXEL_PER_SEC / 1000.0f * ENTITY_UPDATE_INTERVAL_MS;
     if (mEntityPosnUpdateClock.getElapsedTime() >= enityUpdateInterval) {
         const auto [oldX, oldY] = mPosition;
-        const auto cellNum = mMaze.pixelToCellNumber(oldX, oldY);
-        const auto geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
+        const sf::Vector2i cellNum = mMaze.pixelToCellNumber(oldX, oldY);
+        const Chromosome::GeneticMoveInfo geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
         float dX = 0, dY = 0;
         switch (geneticMoveInfo) {
             case Chromosome::UP:
@@ -78,8 +78,8 @@ void Entity::update() {
         dX *= States::simulationSpeedScaler;
         dY *= States::simulationSpeedScaler;
         if (mMaze.isValidMoveInPixels(oldX, oldX, dX, dY)) {
-            const auto newX = oldX + dX;
-            const auto newY = oldY + dY;
+            const float newX = oldX + dX;
+            const float newY = oldY + dY;
             mPosition = {newX, newY};
             mShape.setPosition(mPosition);
         }

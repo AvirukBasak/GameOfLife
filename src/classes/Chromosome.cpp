@@ -17,8 +17,8 @@ Chromosome::Chromosome(const Maze &maze)
     // Initialize with random moves (8 possible moves)
     std::uniform_int_distribution<> distrib(0, 7);
 
-    for (auto &gene: mChromoString) {
-        gene = static_cast<GeneticMoveInfo>(distrib(gen));
+    for (GeneticMoveInfo &gene: mChromoString) {
+        gene = (GeneticMoveInfo) distrib(gen);
     }
 }
 
@@ -30,7 +30,7 @@ Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf:
             .append(std::to_string(cellNum.y))
             .append("] not in chromosome map"));
     }
-    const auto geneLocation = mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.at(cellNum);
+    const int geneLocation = mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.at(cellNum);
     return mChromoString[geneLocation];
 }
 
@@ -51,7 +51,7 @@ void Chromosome::mutateRandom(int mutationCount) {
         // Select a random position to mutate
         const int position = positionDistrib(gen);
         // Generate a new random move
-        const auto newMove = (GeneticMoveInfo) moveDistrib(gen);
+        const GeneticMoveInfo newMove = (GeneticMoveInfo) moveDistrib(gen);
         // Apply mutation
         this->mChromoString[position] = newMove;
     }

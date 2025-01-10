@@ -9,11 +9,11 @@ class Constants final {
 public:
     Constants() = delete;
 
-    static constexpr auto ASSETS_PATH = "../../assets";
-    static constexpr float RENDER_FPS = 60;
-    static constexpr auto WINDOW_WIDTH = 1200;
-    static constexpr auto WINDOW_HEIGHT = 840;
-    static constexpr auto WINDOW_TITLE = "Rat in Maze";
+    static constexpr const char *ASSETS_PATH = "../../assets";
+    static constexpr const char *WINDOW_TITLE = "Rat in Maze";
+    static constexpr float RENDER_FPS = 60.0f;
+    static constexpr int WINDOW_WIDTH = 1200;
+    static constexpr int WINDOW_HEIGHT = 840;
 
     static void init();
 };

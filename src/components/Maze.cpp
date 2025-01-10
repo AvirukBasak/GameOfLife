@@ -17,8 +17,8 @@
 
 template<typename T>
 void printMatrix(const std::vector<std::vector<T> > &matrix, const std::string &name) {
-    for (const auto &row: matrix) {
-        for (const auto &cell: row) {
+    for (const std::vector<T> &row: matrix) {
+        for (const T &cell: row) {
             if ("mFitnessMaze" == name) {
                 if (cell == -1) {
                     std::cout << "\u2588\u2588\u2588\u2588";
@@ -184,9 +184,9 @@ Maze::~Maze() = default;
 void Maze::handleEvent(const sf::Event &event) {
     if (event.type == sf::Event::MouseMoved) {
         const auto [x, y] = event.mouseMove;
-        const auto cellNum = pixelToCellNumber(x, y);
+        const sf::Vector2i cellNum = pixelToCellNumber(x, y);
         if (isCellNumberValid(cellNum) && mBoolMaze[cellNum.y][cellNum.x]) {
-            const auto fitness = getFitnessOfCellNumber(cellNum);
+            const int fitness = getFitnessOfCellNumber(cellNum);
             // Calculate the fitness data and set component params
             mCellFitnessTolltipText.setString(
                 std::string("Fitness: ").append(fitness ? std::to_string(fitness) : "Null")
@@ -199,7 +199,7 @@ void Maze::handleEvent(const sf::Event &event) {
                 y + 7 + 2
             );
             // Highlight the cell being hovered on
-            const auto pixel = cellNumberToPixel(cellNum);
+            const sf::Vector2f pixel = cellNumberToPixel(cellNum);
             mCellIndicatorRect.setPosition(pixel.x + 1, pixel.y + 1);
             mCellIndicatorRect.setSize({
                 getCellSizeInPixels() - 2,
@@ -221,7 +221,7 @@ void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     sprite.setTexture(texture);
 
     const sf::Vector2f targetSize(mImgDrawSize, mImgDrawSize);
-    const auto spriteBounds = sprite.getLocalBounds();
+    const sf::FloatRect spriteBounds = sprite.getLocalBounds();
     sprite.setScale({
         targetSize.x / spriteBounds.width,
         targetSize.y / spriteBounds.height
@@ -254,9 +254,9 @@ sf::Vector2f Maze::cellNumberToPixel(const sf::Vector2i cellNumber) const {
 }
 
 bool Maze::isValidMoveInPixels(const float pixelX, const float pixelY, const float dx, const float dy) const {
-    const auto newX = pixelX + dx;
-    const auto newY = pixelY + dy;
-    const auto cellNum = pixelToCellNumber(newX, newY);
+    const float newX = pixelX + dx;
+    const float newY = pixelY + dy;
+    const sf::Vector2i cellNum = pixelToCellNumber(newX, newY);
     return isCellNumberValid(cellNum) && true == mBoolMaze[cellNum.y][cellNum.x];
 }
 

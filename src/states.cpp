@@ -16,7 +16,7 @@ int States::entityCount = 10;
 sf::Font States::defaultFont;
 
 void States::init() {
-    const auto fontpath = Utils::pathjoin({Constants::ASSETS_PATH, "fonts", "arial.ttf"});
+    const std::string fontpath = Utils::pathjoin({Constants::ASSETS_PATH, "fonts", "arial.ttf"});
     if (!defaultFont.loadFromFile(fontpath)) {
         throw std::runtime_error(std::string("Failed to load '").append(fontpath).append("'"));
     }

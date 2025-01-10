@@ -6,7 +6,7 @@
 
 std::string Utils::pathjoin(const std::initializer_list<std::string> paths) {
     std::string path;
-    for (const auto &p: paths) {
+    for (const std::string &p: paths) {
         path.append(p);
         path.push_back('/');
     }
