@@ -197,15 +197,17 @@ void Maze::handleEvent(const sf::Event &event) {
             std::stringstream ss;
             ss << "Cell: " << cellNum.x << ", " << cellNum.y << std::endl
                     << "Fitness: " << fitness << std::endl
+                    << "Gene No: " << mChromosmeFriend.mCellNumberToGeneIndexMapping[{cellNum.x, cellNum.y}] <<
+                    std::endl
                     << "Top Left: " << std::fixed << std::setprecision(1) << pixel.x << ", " << pixel.y << std::endl
                     << "Bottom Right: " << std::fixed << std::setprecision(1) << pixel.x + getCellSizeInPixels() << ", "
                     << pixel.y + getCellSizeInPixels() << std::endl;
             // Set component data
             mCellFitnessTolltipText.setString(ss.str());
             // Set positions and offset upwards if tooltip goes out of screen
-            const int yOffset = (y + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y > Constants::WINDOW_HEIGHT)
-                                    ? -(TOOLTIP_OFFSET + +TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y)
-                                    : 0;
+            const float yOffset = (y + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y > Constants::WINDOW_HEIGHT)
+                                      ? -(TOOLTIP_OFFSET + +TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y)
+                                      : 0;
             mCellFitnessToltipRect.setPosition(
                 x + TOOLTIP_OFFSET,
                 y + TOOLTIP_OFFSET + yOffset
