@@ -7,6 +7,7 @@ add_executable(${PROJECT_NAME}
         components/CounterText.cpp
         components/Entity.cpp
         components/Maze.cpp
+        components/ControlPanel.cpp
 )
 
 # add_subdirectory(subdir)
