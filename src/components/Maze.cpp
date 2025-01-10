@@ -170,13 +170,18 @@ Maze::Maze(const int width, const int height)
     mCellFitnessToltipRect.setOutlineThickness(1);
     // Padding of 3 size
     mCellFitnessToltipRect.setSize({
-        2 * 3 + 100.0f,
-        2 * 3 + 18.0f
+        TOOLTIP_WIDTH + TOOLTIP_PADDING,
+        TOOLTIP_HEIGHT + TOOLTIP_PADDING
     });
 
     mCellIndicatorRect.setFillColor(sf::Color::Transparent);
     mCellIndicatorRect.setOutlineColor(sf::Color::Red);
     mCellIndicatorRect.setOutlineThickness(1);
+    // -2 adjustment to compensate for the outline in all sides
+    mCellIndicatorRect.setSize({
+        getCellSizeInPixels() - 2,
+        getCellSizeInPixels() - 2
+    });
 }
 
 Maze::~Maze() = default;
@@ -187,24 +192,30 @@ void Maze::handleEvent(const sf::Event &event) {
         const sf::Vector2i cellNum = pixelToCellNumber(x, y);
         if (isCellNumberValid(cellNum) && mBoolMaze[cellNum.y][cellNum.x]) {
             const int fitness = getFitnessOfCellNumber(cellNum);
-            // Calculate the fitness data and set component params
-            mCellFitnessTolltipText.setString(
-                std::string("Fitness: ").append(fitness ? std::to_string(fitness) : "Null")
-            );
-            mCellFitnessToltipRect.setPosition(
-                x + 7,
-                y + 7);
-            mCellFitnessTolltipText.setPosition(
-                x + 7 + 3 + 9,
-                y + 7 + 2
-            );
-            // Highlight the cell being hovered on
             const sf::Vector2f pixel = cellNumberToPixel(cellNum);
+            // Compute the tooltip text
+            std::stringstream ss;
+            ss << "Cell: " << cellNum.x << ", " << cellNum.y << std::endl
+                    << "Fitness: " << fitness << std::endl
+                    << "Top Left: " << std::fixed << std::setprecision(1) << pixel.x << ", " << pixel.y << std::endl
+                    << "Bottom Right: " << std::fixed << std::setprecision(1) << pixel.x + getCellSizeInPixels() << ", "
+                    << pixel.y + getCellSizeInPixels() << std::endl;
+            // Set component data
+            mCellFitnessTolltipText.setString(ss.str());
+            // Set positions and offset upwards if tooltip goes out of screen
+            const int yOffset = (y + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y > Constants::WINDOW_HEIGHT)
+                                    ? -(TOOLTIP_OFFSET + +TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y)
+                                    : 0;
+            mCellFitnessToltipRect.setPosition(
+                x + TOOLTIP_OFFSET,
+                y + TOOLTIP_OFFSET + yOffset
+            );
+            mCellFitnessTolltipText.setPosition(
+                x + TOOLTIP_OFFSET + TOOLTIP_PADDING,
+                y + TOOLTIP_OFFSET + TOOLTIP_PADDING + yOffset
+            );
+            // Highlight the cell being hovered on, +1 adjustment to highlight within the cell
             mCellIndicatorRect.setPosition(pixel.x + 1, pixel.y + 1);
-            mCellIndicatorRect.setSize({
-                getCellSizeInPixels() - 2,
-                getCellSizeInPixels() - 2
-            });
         } else {
             mCellFitnessTolltipText.setString("");
         }
