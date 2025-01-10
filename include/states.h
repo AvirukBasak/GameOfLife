@@ -11,7 +11,7 @@ class States final {
 public:
     States() = delete;
 
-    static int simulationSpeedScaler;
+    static float simulationSpeedScaler;
     static float mutationProbability;
     static int entityCount;
     static sf::Font defaultFont;

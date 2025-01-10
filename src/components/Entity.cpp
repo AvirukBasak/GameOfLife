@@ -9,28 +9,28 @@
 #include "components/Maze.h"
 #include "components/Entity.h"
 
-Entity::Entity(int id, const Maze &maze)
-    : mId(id), mHasStopped(false), mMaze(maze), mChromosome(maze) {
-    mShape.setRadius(maze.getCellSizeInPixels() / 4);
+Entity::Entity(const int id, const Maze &maze)
+    : mId(id), mMaze(maze), mChromosome(maze), mHasStopped(false),
+      mDiameter(maze.getCellSizeInPixels() / 2) {
+    mShape.setRadius(mDiameter / 2);
     mShape.setFillColor(sf::Color::Red);
     const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
         pixel.x,
         pixel.y
     );
-    mPosition = mShape.getPosition();
 };
 
-Entity::Entity(int id, const Maze &maze, Chromosome chromosome)
-    : mId(id), mHasStopped(false), mMaze(maze), mChromosome(std::move(chromosome)) {
-    mShape.setRadius(maze.getCellSizeInPixels() / 2);
+Entity::Entity(const int id, const Maze &maze, Chromosome chromosome)
+    : mId(id), mMaze(maze), mChromosome(std::move(chromosome)), mHasStopped(false),
+      mDiameter(maze.getCellSizeInPixels() / 2) {
+    mShape.setRadius(mDiameter / 2);
     mShape.setFillColor(sf::Color::Red);
     const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
         pixel.x,
         pixel.y
     );
-    mPosition = mShape.getPosition();
 }
 
 void Entity::handleEvent(const sf::Event &event) {
@@ -42,7 +42,7 @@ void Entity::update() {
     // In 1000 ms you move by UNIT_MOVE_PIXEL_PER_SEC, so we calculate move in each ENTITY_UPDATE_INTERVAL_MS ms
     constexpr float movePerUpdateInterval = UNIT_MOVE_PIXEL_PER_SEC / 1000.0f * ENTITY_UPDATE_INTERVAL_MS;
     if (mEntityPosnUpdateClock.getElapsedTime() >= enityUpdateInterval) {
-        const auto [oldX, oldY] = mPosition;
+        const auto [oldX, oldY] = mShape.getPosition();
         const sf::Vector2i cellNum = mMaze.pixelToCellNumber(oldX, oldY);
         const Chromosome::GeneticMoveInfo geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
         float dX = 0, dY = 0;
@@ -78,19 +78,15 @@ void Entity::update() {
             case Chromosome::STOP:
                 if (!mHasStopped) {
                     std::cerr << "Stopped Entity[" << mId << "] at position: ["
-                            << mPosition.x << ", " << mPosition.y << "]"
-                            << std::endl;
+                            << oldX << ", " << oldY << "]" << std::endl;
                     mHasStopped = true;
                 }
                 break;
         }
         dX *= States::simulationSpeedScaler;
         dY *= States::simulationSpeedScaler;
-        if (mMaze.isValidMoveInPixels(oldX, oldX, dX, dY)) {
-            const float newX = oldX + dX;
-            const float newY = oldY + dY;
-            mPosition = {newX, newY};
-            mShape.setPosition(mPosition);
+        if (mMaze.isValidMoveInPixels(mDiameter, oldX, oldY, dX, dY)) {
+            mShape.setPosition({oldX + dX, oldY + dY});
         }
         mEntityPosnUpdateClock.restart();
     }

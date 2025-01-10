@@ -14,11 +14,11 @@ class Entity final : public IGameComponent {
 
     const Chromosome mChromosome;
     sf::CircleShape mShape;
-    sf::Vector2f mPosition;
 
     sf::Clock mEntityPosnUpdateClock;
 
     bool mHasStopped;
+    float mDiameter;
 
     explicit Entity(int id, const Maze &maze, Chromosome chromosome);
 
