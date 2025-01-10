@@ -38,7 +38,7 @@ void printMatrix(const std::vector<std::vector<T> > &matrix, const std::string &
 }
 
 void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vector<std::vector<int> > &mFitnessMaze) {
-    const int size = static_cast<int>(mBoolMaze.size());
+    const int size = mBoolMaze.size();
     const int destX = size - 2;
     const int destY = size - 2;
 
@@ -105,7 +105,7 @@ void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vect
 }
 
 ChromosmeFriend::ChromosmeFriend()
-    : mWhiteCellCount(0), mCellNumberToGeneIndexMapping() {
+    : mWhiteCellCount(0) {
 }
 
 EntityFriend::EntityFriend() = default;
@@ -140,14 +140,14 @@ Maze::Maze(const int width, const int height)
             const sf::Uint8 *pixel = pixelArr[i][j];
             float grayScale = 0.0;
             for (int k = 0; k < 4; k++) {
-                grayScale += static_cast<float>(pixel[k]) / 4;
+                grayScale += pixel[k] / 4.0f;
             }
             // If white image cell (or far enough from black in color)
             if (grayScale >= 64) {
                 mBoolMaze[i][j] = true; // Mark cell as true
                 mChromosmeFriend.mWhiteCellCount += 1; // Increment count of white cells by 1
                 // Set mCellNumberToGeneIndexMapping for (j, i) i.e. (row, col) to the index of gene
-                mChromosmeFriend.mCellNumberToGeneIndexMapping[sf::Vector2i(j, i)] =
+                mChromosmeFriend.mCellNumberToGeneIndexMapping[{j, i}] =
                         mChromosmeFriend.mWhiteCellCount - 1;
             }
         }
@@ -169,7 +169,10 @@ Maze::Maze(const int width, const int height)
     mCellFitnessToltipRect.setOutlineColor(sf::Color::Black);
     mCellFitnessToltipRect.setOutlineThickness(1);
     // Padding of 3 size
-    mCellFitnessToltipRect.setSize(sf::Vector2f(2 * 3 + 100, 2 * 3 + 18));
+    mCellFitnessToltipRect.setSize({
+        2 * 3 + 100.0f,
+        2 * 3 + 18.0f
+    });
 
     mCellIndicatorRect.setFillColor(sf::Color::Transparent);
     mCellIndicatorRect.setOutlineColor(sf::Color::Red);
@@ -181,17 +184,27 @@ Maze::~Maze() = default;
 void Maze::handleEvent(const sf::Event &event) {
     if (event.type == sf::Event::MouseMoved) {
         const auto [x, y] = event.mouseMove;
-        const auto cellNum = this->pixelToCellNumber(x, y);
-        if (this->isCellNumberValid(cellNum) && mBoolMaze[cellNum.y][cellNum.x]) {
-            const auto fitness = this->getFitnessOfCellNumber(cellNum);
+        const auto cellNum = pixelToCellNumber(x, y);
+        if (isCellNumberValid(cellNum) && mBoolMaze[cellNum.y][cellNum.x]) {
+            const auto fitness = getFitnessOfCellNumber(cellNum);
             // Calculate the fitness data and set component params
-            mCellFitnessTolltipText.setString(std::string("Fitness: ").append(fitness ? std::to_string(fitness) : "Null"));
-            mCellFitnessToltipRect.setPosition(static_cast<float>(x + 7), static_cast<float>(y + 7));
-            mCellFitnessTolltipText.setPosition(static_cast<float>(x + 7 + 3 + 9), static_cast<float>(y + 7 + 2));
+            mCellFitnessTolltipText.setString(
+                std::string("Fitness: ").append(fitness ? std::to_string(fitness) : "Null")
+            );
+            mCellFitnessToltipRect.setPosition(
+                x + 7,
+                y + 7);
+            mCellFitnessTolltipText.setPosition(
+                x + 7 + 3 + 9,
+                y + 7 + 2
+            );
             // Highlight the cell being hovered on
-            const auto pixel = this->cellNumberToPixel(cellNum);
-            mCellIndicatorRect.setPosition(static_cast<float>(pixel.x +1), static_cast<float>(pixel.y +1));
-            mCellIndicatorRect.setSize(sf::Vector2f(sf::Vector2i(this->getCellSizeInPixels() -2, this->getCellSizeInPixels() -2)));
+            const auto pixel = cellNumberToPixel(cellNum);
+            mCellIndicatorRect.setPosition(pixel.x + 1, pixel.y + 1);
+            mCellIndicatorRect.setSize({
+                getCellSizeInPixels() - 2,
+                getCellSizeInPixels() - 2
+            });
         } else {
             mCellFitnessTolltipText.setString("");
         }
@@ -207,9 +220,12 @@ void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     sf::Sprite sprite;
     sprite.setTexture(texture);
 
-    const sf::Vector2f targetSize(static_cast<float>(mImgDrawSize), static_cast<float>(mImgDrawSize));
+    const sf::Vector2f targetSize(mImgDrawSize, mImgDrawSize);
     const auto spriteBounds = sprite.getLocalBounds();
-    sprite.setScale(sf::Vector2f(targetSize.x / spriteBounds.width, targetSize.y / spriteBounds.height));
+    sprite.setScale({
+        targetSize.x / spriteBounds.width,
+        targetSize.y / spriteBounds.height
+    });
 
     target.draw(sprite, states);
 
@@ -220,20 +236,26 @@ void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     }
 }
 
-sf::Vector2i Maze::pixelToCellNumber(const int pixelX, const int pixelY) const {
+sf::Vector2i Maze::pixelToCellNumber(const float pixelX, const float pixelY) const {
     // image size in pixels when loaded from file = mImgLoadSize
     // image size in pixels when drawn = mImgDrawSize
     // total cells per dimension of image / maze (x and y dirn) = CELLS_PER_DIMENSION
-    return {pixelX / getCellSizeInPixels(), pixelY / getCellSizeInPixels()};
+    return {
+        (int) (pixelX / getCellSizeInPixels()),
+        (int) (pixelY / getCellSizeInPixels())
+    };
 }
 
-sf::Vector2i Maze::cellNumberToPixel(const sf::Vector2i cellNumber) const {
-    return {cellNumber.x * getCellSizeInPixels(), cellNumber.y * getCellSizeInPixels()};
+sf::Vector2f Maze::cellNumberToPixel(const sf::Vector2i cellNumber) const {
+    return {
+        cellNumber.x * getCellSizeInPixels(),
+        cellNumber.y * getCellSizeInPixels()
+    };
 }
 
-bool Maze::isValidMoveInPixels(const int pixelX, const int pixelY, const int dx, const int dy) const {
-    const int newX = pixelX + dx;
-    const int newY = pixelY + dy;
+bool Maze::isValidMoveInPixels(const float pixelX, const float pixelY, const float dx, const float dy) const {
+    const auto newX = pixelX + dx;
+    const auto newY = pixelY + dy;
     const auto cellNum = pixelToCellNumber(newX, newY);
     return isCellNumberValid(cellNum) && true == mBoolMaze[cellNum.y][cellNum.x];
 }
@@ -260,7 +282,7 @@ sf::Vector2i Maze::getDestCellNumber() const {
     return {CELLS_PER_DIMENSION - 2, CELLS_PER_DIMENSION - 2};
 }
 
-int Maze::getCellSizeInPixels() const {
+float Maze::getCellSizeInPixels() const {
     // image size in pixels when loaded from file = mImgLoadSize
     // image size in pixels when drawn = mImgDrawSize
     // total cells per dimension of image / maze (x and y dirn) = CELLS_PER_DIMENSION

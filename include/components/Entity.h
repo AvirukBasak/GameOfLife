@@ -13,6 +13,7 @@ class Entity final : public IGameComponent {
 
     const Chromosome mChromosome;
     sf::CircleShape mShape;
+    sf::Vector2f mPosition;
 
     sf::Clock mEntityPosnUpdateClock;
 

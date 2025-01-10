@@ -14,14 +14,12 @@
 #include "interfaces/IGameComponent.h"
 
 template<>
-struct std::hash<sf::Vector2<int32_t> > {
-    size_t operator()(const sf::Vector2<int32_t> &sfVec2i32) const noexcept {
+struct std::hash<sf::Vector2i> {
+    size_t operator()(const sf::Vector2i &sfVec2i32) const noexcept {
         // Shift x left by 32 bits and combine with y using XOR
         // This assumes x and y are 32-bit integers
-        return static_cast<size_t>(
-            (static_cast<int64_t>(sfVec2i32.x) << 32) |
-            static_cast<int64_t>(sfVec2i32.y)
-        );
+        return (size_t) sfVec2i32.x << 32 |
+               (size_t) sfVec2i32.y;
     }
 };
 
@@ -51,13 +49,13 @@ class Maze final : public IGameComponent {
      * The size of the image when it is loaded, where each pixel corresponds to one cell.
      * Thhis value should equal CELLS_PER_DIMENSION.
      */
-    int mImgLoadSize;
+    float mImgLoadSize;
 
     /**
      * The dimensions the image should occupy when displayed in the UI.
      * This is to be equal to min(width, height) of the window.
      */
-    int mImgDrawSize;
+    float mImgDrawSize;
 
     /**
      * Maze - 0 means blocked or wall, 1 means open or path.
@@ -116,9 +114,9 @@ public:
      * @param pixelY Pixel y coordinate
      * @return - Location of the cell in mBoolMaze
      */
-    [[nodiscard]] sf::Vector2i pixelToCellNumber(int pixelX, int pixelY) const;
+    [[nodiscard]] sf::Vector2i pixelToCellNumber(float pixelX, float pixelY) const;
 
-    [[nodiscard]] sf::Vector2i cellNumberToPixel(sf::Vector2i cellNumber) const;
+    [[nodiscard]] sf::Vector2f cellNumberToPixel(sf::Vector2i cellNumber) const;
 
     /**
      * Check if move to a new location is possible given current location and change in loaction.
@@ -128,7 +126,7 @@ public:
      * @param dy Chnage in y direction in pixels
      * @return - If new location is blocked, returns false
      */
-    [[nodiscard]] bool isValidMoveInPixels(int pixelX, int pixelY, int dx, int dy) const;
+    [[nodiscard]] bool isValidMoveInPixels(float pixelX, float pixelY, float dx, float dy) const;
 
     /**
      * Check if (i, j) is a valid cell number.
@@ -157,7 +155,7 @@ public:
     /**
      * @return - The size (width & height) of any cell in pixels.
      */
-    [[nodiscard]] int getCellSizeInPixels() const;
+    [[nodiscard]] float getCellSizeInPixels() const;
 };
 
 #endif // CLASSES_MAZE_H

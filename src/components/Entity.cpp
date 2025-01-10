@@ -10,24 +10,26 @@
 
 Entity::Entity(const Maze &maze)
     : mMaze(maze), mChromosome(maze) {
-    mShape.setRadius(static_cast<float>(maze.getCellSizeInPixels()) / 4);
+    mShape.setRadius(maze.getCellSizeInPixels() / 4);
     mShape.setFillColor(sf::Color::Red);
     const auto pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
-        static_cast<float>(pixel.x),
-        static_cast<float>(pixel.y)
+        pixel.x,
+        pixel.y
     );
+    mPosition = mShape.getPosition();
 };
 
 Entity::Entity(const Maze &maze, Chromosome chromosome)
     : mMaze(maze), mChromosome(std::move(chromosome)) {
-    mShape.setRadius(static_cast<float>(maze.getCellSizeInPixels()) / 2);
+    mShape.setRadius(maze.getCellSizeInPixels() / 2);
     mShape.setFillColor(sf::Color::Red);
     const auto pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
-        static_cast<float>(pixel.x),
-        static_cast<float>(pixel.y)
+        pixel.x,
+        pixel.y
     );
+    mPosition = mShape.getPosition();
 }
 
 void Entity::handleEvent(const sf::Event &event) {
@@ -39,7 +41,7 @@ void Entity::update() {
     // In 1000 ms you move by UNIT_MOVE_PIXEL_PER_SEC, so we calculate move in each ENTITY_UPDATE_INTERVAL_MS ms
     constexpr float movePerUpdateInterval = UNIT_MOVE_PIXEL_PER_SEC / 1000.0f * ENTITY_UPDATE_INTERVAL_MS;
     if (mEntityPosnUpdateClock.getElapsedTime() >= enityUpdateInterval) {
-        const auto [oldX, oldY] = static_cast<sf::Vector2i>(mShape.getPosition());
+        const auto [oldX, oldY] = mPosition;
         const auto cellNum = mMaze.pixelToCellNumber(oldX, oldY);
         const auto geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
         float dX = 0, dY = 0;
@@ -78,7 +80,8 @@ void Entity::update() {
         if (mMaze.isValidMoveInPixels(oldX, oldX, dX, dY)) {
             const auto newX = oldX + dX;
             const auto newY = oldY + dY;
-            mShape.setPosition(newX, newY);
+            mPosition = {newX, newY};
+            mShape.setPosition(mPosition);
         }
         mEntityPosnUpdateClock.restart();
     }
