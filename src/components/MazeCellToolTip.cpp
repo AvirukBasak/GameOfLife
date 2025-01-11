@@ -37,6 +37,12 @@ void MazeCellToolTip::handleEvent(const sf::Event &event) {
     if (event.type == sf::Event::MouseMoved) {
         const auto [x, y] = event.mouseMove;
         if (!States::mazeCellTooltipData.isEmpty()) {
+            /* Restart mDelayClock if pointer moved from black to white i.e.
+             * state changed from empty to non-empty */
+            if (mWasPrevStateEmpty) {
+                mDelayClock.restart();
+                mWasPrevStateEmpty = false;
+            }
             const sf::Vector2f pixel = States::mazeCellTooltipData.mTopLeft;
             // Set component data from state
             mCellFitnessTolltipText.setString(States::mazeCellTooltipData.toString());
@@ -61,6 +67,7 @@ void MazeCellToolTip::handleEvent(const sf::Event &event) {
         } else {
             mCellFitnessTolltipText.setString("");
             States::mazeCellTooltipData = States::MazeCellToolTipData::empty();
+            mWasPrevStateEmpty = true;
         }
     }
 }
@@ -70,8 +77,11 @@ void MazeCellToolTip::update() {
 
 void MazeCellToolTip::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     if (mCellFitnessTolltipText.getString() != "") {
-        target.draw(mCellIndicatorRect, states);
-        target.draw(mCellFitnessToltipRect, states);
-        target.draw(mCellFitnessTolltipText, states);
+        // Draw after delay from mDelayClock
+        if (mDelayClock.getElapsedTime() > mDelayTime) {
+            target.draw(mCellIndicatorRect, states);
+            target.draw(mCellFitnessToltipRect, states);
+            target.draw(mCellFitnessTolltipText, states);
+        }
     }
 }
