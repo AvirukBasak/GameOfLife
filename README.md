@@ -2,7 +2,7 @@
 
 Idea taken from this video https://www.youtube.com/watch?v=XP2sFzp2Rig by [argonaut](https://www.youtube.com/@argonautcode).
 
-Developed in C++ with `SFML v2.6.0`.
+Developed in C++ with `SFML v2.6.0`, `Dear ImGui v1.90.6` and `ImGui-SFML v2.6`.
 
 ## Setting Up
 This project was developed and tested on Linux (Ubuntu 24.04) so the following guide is based on the same.
@@ -17,7 +17,7 @@ If you are using an older (or newer) version of SFML, you may need to change the
 
 ## Screenshots
 ### Window
-![Screenshot from 2025-01-10 00-46-34](https://github.com/user-attachments/assets/699e246c-513f-4c89-8818-ee735f4d0085)
+![Screenshot from 2025-01-12 02-30-35](https://github.com/user-attachments/assets/d54eb064-b095-4634-83e4-0763d9cd5d2a)
 
 ### Fitness Function
 ![Screenshot from 2025-01-10 00-48-04](https://github.com/user-attachments/assets/6f732ffe-f17d-479f-8b2c-54262f17c103)
