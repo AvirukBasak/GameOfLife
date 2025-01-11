@@ -55,14 +55,14 @@ int main() {
         // Call game update function to update states on eaach iter
         game.update();
 
-        // ImGui render
-        ImGui::SFML::Render(window);
-
         // Render frame RENDER_FPS times
         if (renderClock.getElapsedTime() >= renderInterval) {
             game.render();
             renderClock.restart();
         }
+
+        // Render ImGui last to display it over the SFML game
+        ImGui::SFML::Render(window);
     }
 
     ImGui::SFML::Shutdown();
