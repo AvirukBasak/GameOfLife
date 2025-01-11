@@ -40,16 +40,20 @@ void MazeCellToolTip::handleEvent(const sf::Event &event) {
             const sf::Vector2f pixel = States::mazeCellTooltipData.mTopLeft;
             // Set component data from state
             mCellFitnessTolltipText.setString(States::mazeCellTooltipData.toString());
-            // Set positions and offset upwards if tooltip goes out of screen
+            // Set offset leftward if tooltip goes out of maze in x dresction
+            const float xOffset = (x + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().x > Constants::WINDOW_HEIGHT)
+                                      ? -(TOOLTIP_OFFSET + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().x)
+                                      : 0;
+            // Set offset upward if tooltip goes out of maze in y dresction
             const float yOffset = (y + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y > Constants::WINDOW_HEIGHT)
-                                      ? -(TOOLTIP_OFFSET + +TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y)
+                                      ? -(TOOLTIP_OFFSET + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y)
                                       : 0;
             mCellFitnessToltipRect.setPosition(
-                x + TOOLTIP_OFFSET,
+                x + TOOLTIP_OFFSET + xOffset,
                 y + TOOLTIP_OFFSET + yOffset
             );
             mCellFitnessTolltipText.setPosition(
-                x + TOOLTIP_OFFSET + TOOLTIP_PADDING,
+                x + TOOLTIP_OFFSET + TOOLTIP_PADDING + xOffset,
                 y + TOOLTIP_OFFSET + TOOLTIP_PADDING + yOffset
             );
             // Highlight the cell being hovered on, +1 adjustment to highlight within the cell
