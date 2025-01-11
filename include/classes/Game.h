@@ -5,14 +5,13 @@
 #ifndef CLASSES_GAME_H
 #define CLASSES_GAME_H
 
-#include <components/ControlPanel.h>
-
 #include "SFML/Graphics.hpp"
 
 #include "components/Entity.h"
 #include "components/Maze.h"
 #include "components/CounterText.h"
 #include "components/MazeCellToolTip.h"
+#include "imgui/ControlPanel.h"
 
 class Game {
     sf::RenderWindow &mWindow;

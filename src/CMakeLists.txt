@@ -9,8 +9,8 @@ target_sources(${PROJECT_NAME}
         components/CounterText.cpp
         components/Entity.cpp
         components/Maze.cpp
-        components/ControlPanel.cpp
         components/MazeCellToolTip.cpp
+        imgui/ControlPanel.cpp
 )
 
 # add_subdirectory(subdir)

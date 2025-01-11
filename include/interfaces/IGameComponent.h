@@ -2,8 +2,8 @@
 // Created by aviruk on 1/8/25.
 //
 
-#ifndef INTERFACES_IDRAWABLE_H
-#define INTERFACES_IDRAWABLE_H
+#ifndef INTERFACES_IGAMECOMPONENT_H
+#define INTERFACES_IGAMECOMPONENT_H
 
 #include <SFML/Graphics.hpp>
 
@@ -29,4 +29,4 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
 };
 
-#endif //INTERFACES_IDRAWABLE_H
+#endif //INTERFACES_IGAMECOMPONENT_H

@@ -20,7 +20,6 @@ Game::~Game() = default;
 
 void Game::handleEvent(const sf::Event &event) {
     mCounterText.handleEvent(event);
-    mControlPanel.handleEvent(event);
     mMaze.handleEvent(event);
     for (Entity &e: mEntities) {
         e.handleEvent(event);
@@ -30,19 +29,20 @@ void Game::handleEvent(const sf::Event &event) {
 
 void Game::update() {
     mCounterText.update();
-    mControlPanel.update();
     mMaze.update();
     for (Entity &e: mEntities) {
         e.update();
     }
     mMazeCellToolTip.update();
+
+    // Call renderImgui in update only
+    mControlPanel.renderImGui();
 }
 
 void Game::render() const {
     mWindow.clear(sf::Color::Black);
 
     mWindow.draw(mCounterText);
-    mWindow.draw(mControlPanel);
     mWindow.draw(mMaze);
     for (const Entity &e: mEntities) {
         mWindow.draw(e);
