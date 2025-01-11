@@ -44,10 +44,6 @@ public:
 
 class Maze final : public IGameComponent {
     static constexpr int WORST_INVERSE_FITNESS = 999;
-    static constexpr int TOOLTIP_OFFSET = 8;
-    static constexpr int TOOLTIP_PADDING = 5;
-    static constexpr int TOOLTIP_WIDTH = 185;
-    static constexpr int TOOLTIP_HEIGHT = 91;
 
     /**
      * The size of the image when it is loaded, where each pixel corresponds to one cell.
@@ -77,13 +73,6 @@ class Maze final : public IGameComponent {
      * The image to display for the maze. This is for UI purposes.
      */
     sf::Image mImage;
-
-    /**
-     * Show a tolltip with cell fitness value on hover over the cell.
-     */
-    sf::Text mCellFitnessTolltipText;
-    sf::RectangleShape mCellFitnessToltipRect;
-    sf::RectangleShape mCellIndicatorRect;
 
 public:
     ChromosmeFriend mChromosmeFriend;

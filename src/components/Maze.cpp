@@ -158,29 +158,6 @@ Maze::Maze(const int width, const int height)
 
     // Fill the fitness matrix
     fillFitnessMaze(mBoolMaze, mInverseFitnessMaze);
-
-    // Set up other drawable components
-    mCellFitnessTolltipText.setFont(States::defaultFont);
-    mCellFitnessTolltipText.setCharacterSize(15);
-    mCellFitnessTolltipText.setFillColor(sf::Color::Black);
-
-    mCellFitnessToltipRect.setFillColor(sf::Color::Yellow);
-    mCellFitnessToltipRect.setOutlineColor(sf::Color::Black);
-    mCellFitnessToltipRect.setOutlineThickness(1);
-    // Padding of 3 size
-    mCellFitnessToltipRect.setSize({
-        TOOLTIP_WIDTH + TOOLTIP_PADDING,
-        TOOLTIP_HEIGHT + TOOLTIP_PADDING
-    });
-
-    mCellIndicatorRect.setFillColor(sf::Color::Transparent);
-    mCellIndicatorRect.setOutlineColor(sf::Color::Red);
-    mCellIndicatorRect.setOutlineThickness(1);
-    // -2 adjustment to compensate for the outline in all sides
-    mCellIndicatorRect.setSize({
-        getCellSizeInPixels() - 2,
-        getCellSizeInPixels() - 2
-    });
 }
 
 Maze::~Maze() = default;
@@ -192,33 +169,18 @@ void Maze::handleEvent(const sf::Event &event) {
         if (isCellNumberValid(cellNum) && mBoolMaze[cellNum.y][cellNum.x]) {
             const int fitness = getFitnessOfCellNumber(cellNum);
             const sf::Vector2f pixel = cellNumberToPixel(cellNum);
-            // Compute the tooltip text
-            std::stringstream ss;
-            ss << "Cell: " << cellNum.x << ", " << cellNum.y << std::endl
-                    << "Fitness: " << fitness << std::endl
-                    << "Gene No: " << mChromosmeFriend.mCellNumberToGeneIndexMapping[{cellNum.x, cellNum.y}] <<
-                    std::endl
-                    << "Top Left: " << std::fixed << std::setprecision(1) << pixel.x << ", " << pixel.y << std::endl
-                    << "Bottom Right: " << std::fixed << std::setprecision(1) << pixel.x + getCellSizeInPixels() << ", "
-                    << pixel.y + getCellSizeInPixels() << std::endl;
-            // Set component data
-            mCellFitnessTolltipText.setString(ss.str());
-            // Set positions and offset upwards if tooltip goes out of screen
-            const float yOffset = (y + TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y > Constants::WINDOW_HEIGHT)
-                                      ? -(TOOLTIP_OFFSET + +TOOLTIP_OFFSET + mCellFitnessToltipRect.getSize().y)
-                                      : 0;
-            mCellFitnessToltipRect.setPosition(
-                x + TOOLTIP_OFFSET,
-                y + TOOLTIP_OFFSET + yOffset
+            // Compute the tooltip text and set state data
+            States::mazeCellTooltipData = States::MazeCellToolTipData(
+                cellNum, fitness,
+                mChromosmeFriend.mCellNumberToGeneIndexMapping.at({cellNum.x, cellNum.y}),
+                pixel,
+                {
+                    pixel.x + getCellSizeInPixels(),
+                    pixel.y + getCellSizeInPixels()
+                }
             );
-            mCellFitnessTolltipText.setPosition(
-                x + TOOLTIP_OFFSET + TOOLTIP_PADDING,
-                y + TOOLTIP_OFFSET + TOOLTIP_PADDING + yOffset
-            );
-            // Highlight the cell being hovered on, +1 adjustment to highlight within the cell
-            mCellIndicatorRect.setPosition(pixel.x + 1, pixel.y + 1);
         } else {
-            mCellFitnessTolltipText.setString("");
+            States::mazeCellTooltipData = States::MazeCellToolTipData::empty();
         }
     }
 }
@@ -240,12 +202,6 @@ void Maze::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     });
 
     target.draw(sprite, states);
-
-    if (mCellFitnessTolltipText.getString() != "") {
-        target.draw(mCellIndicatorRect, states);
-        target.draw(mCellFitnessToltipRect, states);
-        target.draw(mCellFitnessTolltipText, states);
-    }
 }
 
 sf::Vector2i Maze::pixelToCellNumber(const float pixelX, const float pixelY) const {

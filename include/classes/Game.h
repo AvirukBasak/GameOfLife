@@ -12,11 +12,13 @@
 #include "components/Entity.h"
 #include "components/Maze.h"
 #include "components/CounterText.h"
+#include "components/MazeCellToolTip.h"
 
 class Game {
     sf::RenderWindow &mWindow;
 
     Maze mMaze;
+    MazeCellToolTip mMazeCellToolTip;
     CounterText mCounterText;
     ControlPanel mControlPanel;
     std::vector<Entity> mEntities{};
