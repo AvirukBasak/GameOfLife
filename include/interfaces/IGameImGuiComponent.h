@@ -9,7 +9,7 @@ class IGameImGuiComponent {
 public:
     virtual ~IGameImGuiComponent() = default;
 
-    virtual void renderImGui() = 0;
+    virtual void callImGuiComponents() = 0;
 };
 
 #endif //INTERFACES_IGAMEIMGUICOMPONENT_H

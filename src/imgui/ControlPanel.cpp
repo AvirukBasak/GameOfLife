@@ -6,9 +6,18 @@
 #include "states.h"
 #include "imgui/ControlPanel.h"
 
+#include <imgui.h>
+
 ControlPanel::ControlPanel() = default;
 
 ControlPanel::~ControlPanel() = default;
 
-void ControlPanel::renderImGui() {
+void ControlPanel::callImGuiComponents() {
+    ImGui::Begin("Controls");
+
+    ImGui::Text("Controls");
+    ImGui::Text("Controls");
+    ImGui::Text("Controls");
+
+    ImGui::End();
 }

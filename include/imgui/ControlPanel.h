@@ -14,7 +14,7 @@ public:
 
     ~ControlPanel() override;
 
-    void renderImGui() override;
+    void callImGuiComponents() override;
 };
 
 #endif //COMPONENTS_CONTROLPANEL_H

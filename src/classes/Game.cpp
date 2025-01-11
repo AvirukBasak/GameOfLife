@@ -34,20 +34,13 @@ void Game::update() {
         e.update();
     }
     mMazeCellToolTip.update();
-
-    // Call renderImgui in update only
-    mControlPanel.renderImGui();
 }
 
 void Game::render() const {
-    mWindow.clear(sf::Color::Black);
-
     mWindow.draw(mCounterText);
     mWindow.draw(mMaze);
     for (const Entity &e: mEntities) {
         mWindow.draw(e);
     }
     mWindow.draw(mMazeCellToolTip);
-
-    mWindow.display();
 }

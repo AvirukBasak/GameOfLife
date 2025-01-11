@@ -11,7 +11,6 @@
 #include "components/Maze.h"
 #include "components/CounterText.h"
 #include "components/MazeCellToolTip.h"
-#include "imgui/ControlPanel.h"
 
 class Game {
     sf::RenderWindow &mWindow;
@@ -19,7 +18,6 @@ class Game {
     Maze mMaze;
     MazeCellToolTip mMazeCellToolTip;
     CounterText mCounterText;
-    ControlPanel mControlPanel;
     std::vector<Entity> mEntities{};
 
 public:
