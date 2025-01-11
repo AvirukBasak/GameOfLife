@@ -12,7 +12,7 @@ MazeCellToolTip::MazeCellToolTip(const Maze &maze) : mMaze(maze) {
     mCellFitnessTolltipText.setCharacterSize(15);
     mCellFitnessTolltipText.setFillColor(sf::Color::Black);
 
-    mCellFitnessToltipRect.setFillColor(sf::Color::Yellow);
+    mCellFitnessToltipRect.setFillColor(sf::Color(255, 255, 200, 245));
     mCellFitnessToltipRect.setOutlineColor(sf::Color::Black);
     mCellFitnessToltipRect.setOutlineThickness(1);
     // Padding of 3 size
@@ -21,8 +21,8 @@ MazeCellToolTip::MazeCellToolTip(const Maze &maze) : mMaze(maze) {
         TOOLTIP_HEIGHT + TOOLTIP_PADDING
     });
 
-    mCellIndicatorRect.setFillColor(sf::Color::Transparent);
-    mCellIndicatorRect.setOutlineColor(sf::Color::Red);
+    mCellIndicatorRect.setFillColor(sf::Color(0, 0, 255, 50));
+    mCellIndicatorRect.setOutlineColor(sf::Color::Blue);
     mCellIndicatorRect.setOutlineThickness(1);
     // -2 adjustment to compensate for the outline in all sides
     mCellIndicatorRect.setSize({
@@ -77,9 +77,9 @@ void MazeCellToolTip::update() {
 
 void MazeCellToolTip::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     if (mCellFitnessTolltipText.getString() != "") {
+        target.draw(mCellIndicatorRect, states);
         // Draw after delay from mDelayClock
         if (mDelayClock.getElapsedTime() > mDelayTime) {
-            target.draw(mCellIndicatorRect, states);
             target.draw(mCellFitnessToltipRect, states);
             target.draw(mCellFitnessTolltipText, states);
         }

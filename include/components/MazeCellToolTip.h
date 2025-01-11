@@ -26,7 +26,7 @@ class MazeCellToolTip final : public IGameComponent {
     sf::RectangleShape mCellIndicatorRect;
 
     sf::Clock mDelayClock;
-    const sf::Time mDelayTime = sf::milliseconds(500);
+    const sf::Time mDelayTime = sf::milliseconds(750);
     bool mWasPrevStateEmpty = true;
 
 public:
