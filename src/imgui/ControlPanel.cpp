@@ -18,36 +18,38 @@ constexpr ImVec2 windowSize = {
     Constants::WINDOW_HEIGHT - 60 - 14
 };
 
-void ui() {
-    constexpr int spacing = 2;
-
-    for (int i = 0; i < spacing; i++) {
+void spacing(const int size) {
+    for (int i = 0; i < size; i++) {
         ImGui::Spacing();
     }
+}
+
+void ui() {
+    constexpr int spacing1 = 1;
+    constexpr int spacing2 = 2;
+
+    spacing(spacing2);
 
     // Simulation Speed slider
     ImGui::Text("Simulation Speed");
+    spacing(spacing1);
     ImGui::SliderFloat("##SimulationSpeed", &States::simulationSpeedScaler, 0, 10, "%.2f");
 
-    for (int i = 0; i < spacing; i++) {
-        ImGui::Spacing();
-    }
+    spacing(spacing2);
 
     // Population Size slider
     ImGui::Text("Population Size");
+    spacing(spacing1);
     ImGui::SliderInt("##PopulationSize", &States::entityCount, 2, 20);
 
-    for (int i = 0; i < spacing; i++) {
-        ImGui::Spacing();
-    }
+    spacing(spacing2);
 
     // Mutation Probability slider
     ImGui::Text("Mutation Probability");
+    spacing(spacing1);
     ImGui::SliderFloat("##MutationProbability", &States::mutationProbability, 0.0f, 1.0f, "%.2f");
 
-    for (int i = 0; i < spacing; i++) {
-        ImGui::Spacing();
-    }
+    spacing(spacing2);
 
     // Next Generation button
     if (ImGui::Button("Next Generation")) {

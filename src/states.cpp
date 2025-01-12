@@ -14,7 +14,7 @@
 #include "SFML/Graphics/Font.hpp"
 
 float States::simulationSpeedScaler = 1;
-float States::mutationProbability = 0.5;
+float States::mutationProbability = 0.2;
 int States::entityCount = 10;
 sf::Font States::defaultFont;
 States::MazeCellToolTipData States::mazeCellTooltipData{};
