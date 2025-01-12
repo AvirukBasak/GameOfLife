@@ -24,6 +24,8 @@ private:
 public:
     explicit Chromosome(const Maze &maze);
 
+    Chromosome &operator=(const Chromosome &other);
+
     /**
      * Returns the drection or move the entity should take given the location
      * i.e. the cell number (row, col) the entity is currently at in the maze.

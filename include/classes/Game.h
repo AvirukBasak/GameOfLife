@@ -20,6 +20,8 @@ class Game {
     CounterText mCounterText;
     std::vector<Entity> mEntities{};
 
+    int mPrevGeneration;
+
 public:
     explicit Game(sf::RenderWindow &window);
 
@@ -41,6 +43,8 @@ public:
      * Runs RENDER_FPS times per second in game loop.
      */
     void render() const;
+
+    void startSelectionAndReproduction();
 };
 
 #endif // CLASSES_GAME_H

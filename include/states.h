@@ -33,6 +33,7 @@ public:
     static int entityCount;
     static sf::Font defaultFont;
     static MazeCellToolTipData mazeCellTooltipData;
+    static int currentGeneration;
 
     static void init();
 };

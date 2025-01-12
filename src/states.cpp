@@ -18,6 +18,7 @@ float States::mutationProbability = 0.2;
 int States::entityCount = 10;
 sf::Font States::defaultFont;
 States::MazeCellToolTipData States::mazeCellTooltipData{};
+int States::currentGeneration = 1;
 
 void States::init() {
     const std::string fontpath = Utils::pathjoin({Constants::ASSETS_PATH, "fonts", "arial.ttf"});

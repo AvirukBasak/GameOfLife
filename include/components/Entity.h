@@ -12,7 +12,7 @@ class Entity final : public IGameComponent {
     const int mId;
     const Maze &mMaze;
 
-    const Chromosome mChromosome;
+    Chromosome mChromosome;
     sf::CircleShape mShape;
 
     sf::Clock mEntityPosnUpdateClock;
@@ -20,7 +20,7 @@ class Entity final : public IGameComponent {
     bool mHasStopped;
     float mDiameter;
 
-    explicit Entity(int id, const Maze &maze, Chromosome chromosome);
+    friend class Game;
 
 public:
     /**
@@ -38,6 +38,10 @@ public:
 
     explicit Entity(int id, const Maze &maze);
 
+    explicit Entity(int id, const Maze &maze, const Chromosome &chromosome);
+
+    Entity &operator=(const Entity &other);
+
     ~Entity() override;
 
     void handleEvent(const sf::Event &event) override;
@@ -46,9 +50,9 @@ public:
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    std::pair<Entity, Entity> reproduce(const Entity &otherEntity) const;
+    std::pair<Entity, Entity> mateWith(const Entity &otherEntity) const;
 
-    void mutate();
+    sf::Vector2f getPosition() const;
 };
 
 #endif //COMPONENTS_ENTITY_H

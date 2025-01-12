@@ -22,6 +22,11 @@ Chromosome::Chromosome(const Maze &maze)
     }
 }
 
+Chromosome &Chromosome::operator=(const Chromosome &other) {
+    this->mChromoString = other.mChromoString;
+    return *this;
+}
+
 Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf::Vector2i cellNum) const {
     if (mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.count(cellNum) == 0) {
         return STOP;

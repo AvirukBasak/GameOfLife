@@ -21,8 +21,8 @@ Entity::Entity(const int id, const Maze &maze)
     );
 };
 
-Entity::Entity(const int id, const Maze &maze, Chromosome chromosome)
-    : mId(id), mMaze(maze), mChromosome(std::move(chromosome)), mHasStopped(false),
+Entity::Entity(const int id, const Maze &maze, const Chromosome &chromosome)
+    : mId(id), mMaze(maze), mChromosome(chromosome), mHasStopped(false),
       mDiameter(maze.getCellSizeInPixels() / 2) {
     mShape.setRadius(mDiameter / 2);
     mShape.setFillColor(sf::Color::Red);
@@ -31,6 +31,11 @@ Entity::Entity(const int id, const Maze &maze, Chromosome chromosome)
         pixel.x,
         pixel.y
     );
+}
+
+Entity &Entity::operator=(const Entity &other) {
+    this->mChromosome = other.mChromosome;
+    return *this;
 }
 
 void Entity::handleEvent(const sf::Event &event) {
@@ -87,6 +92,8 @@ void Entity::update() {
         dY *= States::simulationSpeedScaler;
         if (mMaze.isValidMoveInPixels(mDiameter, oldX, oldY, dX, dY)) {
             mShape.setPosition({oldX + dX, oldY + dY});
+        } else {
+            mHasStopped = true;
         }
         mEntityPosnUpdateClock.restart();
     }
@@ -96,7 +103,7 @@ void Entity::draw(sf::RenderTarget &target, const sf::RenderStates states) const
     target.draw(mShape, states);
 }
 
-std::pair<Entity, Entity> Entity::reproduce(const Entity &otherEntity) const {
+std::pair<Entity, Entity> Entity::mateWith(const Entity &otherEntity) const {
     auto [chr1, chr2] = this->mChromosome.crossoverSinglePoint(otherEntity.mChromosome);
 
     static std::random_device rd;
@@ -117,6 +124,10 @@ std::pair<Entity, Entity> Entity::reproduce(const Entity &otherEntity) const {
         Entity(this->mId, this->mMaze, chr1),
         Entity(otherEntity.mId, this->mMaze, chr2)
     };
+}
+
+sf::Vector2f Entity::getPosition() const {
+    return mShape.getPosition();
 }
 
 Entity::~Entity() = default;

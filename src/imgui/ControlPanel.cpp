@@ -52,7 +52,10 @@ void ui() {
     spacing(spacing2);
 
     // Next Generation button
+    ImGui::Text("Current Generation: %d", States::currentGeneration);
+    spacing(spacing1);
     if (ImGui::Button("Next Generation")) {
+        ++States::currentGeneration;
     }
 }
 
