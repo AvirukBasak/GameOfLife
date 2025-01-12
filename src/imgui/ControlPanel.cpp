@@ -18,6 +18,9 @@ constexpr ImVec2 windowSize = {
     Constants::WINDOW_HEIGHT - 60 - 14
 };
 
+constexpr float MAX_SIM_SPEED = 50;
+constexpr float MAX_POPU_SIZE = 100;
+
 void spacing(const int size) {
     for (int i = 0; i < size; i++) {
         ImGui::Spacing();
@@ -33,14 +36,14 @@ void ui() {
     // Simulation Speed slider
     ImGui::Text("Simulation Speed");
     spacing(spacing1);
-    ImGui::SliderFloat("##SimulationSpeed", &States::simulationSpeedScaler, 0, 10, "%.2f");
+    ImGui::SliderFloat("##SimulationSpeed", &States::simulationSpeedScaler, 0, MAX_SIM_SPEED, "%.2f");
 
     spacing(spacing2);
 
     // Population Size slider
     ImGui::Text("Population Size");
     spacing(spacing1);
-    ImGui::SliderInt("##PopulationSize", &States::entityCount, 2, 20);
+    ImGui::SliderInt("##PopulationSize", &States::populationSize, 2, MAX_POPU_SIZE);
 
     spacing(spacing2);
 

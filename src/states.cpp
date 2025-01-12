@@ -16,7 +16,7 @@
 
 float States::simulationSpeedScaler = 1;
 float States::mutationProbability = 0.2;
-int States::entityCount = 10;
+int States::populationSize = 10;
 std::string States::defaultFontPath{};
 sf::Font States::defaultSfmlFont;
 ImFont *States::defaultImguiFont = nullptr;

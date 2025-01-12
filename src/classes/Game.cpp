@@ -15,7 +15,7 @@ Game::Game(sf::RenderWindow &window) : mWindow(window),
                                        mMazeCellToolTip(mMaze),
                                        mCounterText(0),
                                        mPrevGeneration(States::currentGeneration) {
-    for (int i = 0; i < States::entityCount; ++i) {
+    for (int i = 0; i < States::populationSize; ++i) {
         mEntities.emplace_back(i, mMaze);
     }
 }
@@ -68,13 +68,15 @@ void Game::startSelectionAndReproduction() {
     std::vector<Entity> newPopulation{};
     // Higher and lower should never be equal
     // Also, the populatioon size should not exceed the States::entityCount limit
-    while (higherFitnessIdx < mEntities.size() - 1 && newPopulation.size() < States::entityCount) {
+    while (higherFitnessIdx < mEntities.size() - 1 && newPopulation.size() < States::populationSize) {
         const Entity &theAlpha = mEntities.at(higherFitnessIdx);
         int lowerFitnessIdx = higherFitnessIdx + 1;
         // Mate the higherFitnessIdx with each Entity once
         // However, if higherFitnessIdx still has vigour left, we will repeat the process
         // Continue till higherFitnessIdx reaches 0 = no more vigour
-        while (vigourScore[higherFitnessIdx] > 0 && newPopulation.size() < States::entityCount) {
+        while (lowerFitnessIdx < mEntities.size()
+               && vigourScore[higherFitnessIdx] > 0
+               && newPopulation.size() < States::populationSize) {
             const Entity &thePartner = mEntities.at(lowerFitnessIdx);
             // Reporduce
             const auto [child1, child2] = theAlpha.mateWith(thePartner);

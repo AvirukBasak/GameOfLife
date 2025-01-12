@@ -31,7 +31,7 @@ public:
 
     static float simulationSpeedScaler;
     static float mutationProbability;
-    static int entityCount;
+    static int populationSize;
     static std::string defaultFontPath;
     static sf::Font defaultSfmlFont;
     static ImFont *defaultImguiFont;
