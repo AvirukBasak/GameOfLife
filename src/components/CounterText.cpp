@@ -16,7 +16,7 @@ std::string mkStrFromCount(const int count) {
 }
 
 CounterText::CounterText(const int initialCount) : mCounter(initialCount) {
-    mText.setFont(States::defaultFont);
+    mText.setFont(States::defaultSfmlFont);
     mText.setCharacterSize(20);
     mText.setFillColor(sf::Color::White);
     mText.setPosition(Constants::WINDOW_HEIGHT + 20, 20);

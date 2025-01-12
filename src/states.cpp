@@ -11,19 +11,22 @@
 #include "utils.h"
 #include "states.h"
 
+#include "imgui.h"
 #include "SFML/Graphics/Font.hpp"
 
 float States::simulationSpeedScaler = 1;
 float States::mutationProbability = 0.2;
 int States::entityCount = 10;
-sf::Font States::defaultFont;
+std::string States::defaultFontPath{};
+sf::Font States::defaultSfmlFont;
+ImFont *States::defaultImguiFont = nullptr;
 States::MazeCellToolTipData States::mazeCellTooltipData{};
 int States::currentGeneration = 1;
 
 void States::init() {
-    const std::string fontpath = Utils::pathjoin({Constants::ASSETS_PATH, "fonts", "arial.ttf"});
-    if (!defaultFont.loadFromFile(fontpath)) {
-        throw std::runtime_error(std::string("Failed to load '").append(fontpath).append("'"));
+    defaultFontPath = Utils::pathjoin({Constants::ASSETS_PATH, "fonts", "arial.ttf"});
+    if (!defaultSfmlFont.loadFromFile(defaultFontPath)) {
+        throw std::runtime_error(std::string("sfml: failed to load '").append(defaultFontPath).append("'"));
     }
 }
 

@@ -8,7 +8,7 @@
 
 MazeCellToolTip::MazeCellToolTip(const Maze &maze) : mMaze(maze) {
     // Set up other drawable components
-    mCellFitnessTolltipText.setFont(States::defaultFont);
+    mCellFitnessTolltipText.setFont(States::defaultSfmlFont);
     mCellFitnessTolltipText.setCharacterSize(15);
     mCellFitnessTolltipText.setFillColor(sf::Color::Black);
 

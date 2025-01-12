@@ -2,6 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
+#include "imgui.h"
 #include "imgui-SFML.h"
 
 #include "constants.h"
@@ -24,6 +25,11 @@ int main() {
     if (!ImGui::SFML::Init(window)) {
         std::cerr << "Failed to initialize ImGui!" << std::endl;
     }
+
+    // States::defaultImguiFont = ImGui::GetIO().Fonts->AddFontFromFileTTF(States::defaultFontPath.c_str(), 12);
+    // if (!States::defaultImguiFont) {
+    //     throw std::runtime_error(std::string("imgui: failed to load '").append(States::defaultFontPath).append("'"));
+    // }
 
     // Create a game object
     Game game(window);

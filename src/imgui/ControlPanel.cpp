@@ -2,11 +2,11 @@
 // Created by aviruk on 1/11/25.
 //
 
+#include "imgui.h"
+
 #include "constants.h"
 #include "states.h"
 #include "imgui/ControlPanel.h"
-
-#include <imgui.h>
 
 ControlPanel::ControlPanel() = default;
 
@@ -62,12 +62,16 @@ void ui() {
 void ControlPanel::callImGuiComponents() {
     ImGui::SetNextWindowPos(windowPosition);
     ImGui::SetNextWindowSize(windowSize);
+
     ImGui::Begin("Controls", nullptr,
                  ImGuiWindowFlags_NoMove |
                  ImGuiWindowFlags_NoResize |
                  ImGuiWindowFlags_NoCollapse);
 
+    // ImGui::PushFont(States::defaultImguiFont);
+
     ui();
 
+    // ImGui::PopFont();
     ImGui::End();
 }

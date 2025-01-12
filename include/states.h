@@ -5,6 +5,7 @@
 #ifndef STATES_H
 #define STATES_H
 
+#include "imgui.h"
 #include "SFML/Graphics/Font.hpp"
 
 class States final {
@@ -31,7 +32,9 @@ public:
     static float simulationSpeedScaler;
     static float mutationProbability;
     static int entityCount;
-    static sf::Font defaultFont;
+    static std::string defaultFontPath;
+    static sf::Font defaultSfmlFont;
+    static ImFont *defaultImguiFont;
     static MazeCellToolTipData mazeCellTooltipData;
     static int currentGeneration;
 
