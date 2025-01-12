@@ -40,6 +40,13 @@ void Game::startSelectionAndReproduction() {
         const int fitness2 = mMaze.getFitnessOfCellNumber(mMaze.pixelToCellNumber(pos2.x, pos2.y));
         return fitness1 > fitness2;
     });
+
+    States::highestFitnessThisGen = mMaze.getFitnessOfCellNumber(mMaze.pixelToCellNumber(
+        mEntities.at(0).getPosition().x,
+        mEntities.at(0).getPosition().y
+    ));
+    States::highestOverallFitness = std::max(States::highestOverallFitness, States::highestFitnessThisGen);
+
     // Sum over all fitness values
     const int64_t fitnessSum = std::accumulate(
         mEntities.begin(), mEntities.end(), 0,
@@ -50,6 +57,7 @@ void Game::startSelectionAndReproduction() {
             return lhs + fitness;
         }
     );
+
     // Calculate mating counts of each entity (higher fitness = more mating count)
     // This is the no. of times an Entity can participate in reproduciton process
     // I like to call this reproductive vigour
@@ -62,6 +70,7 @@ void Game::startSelectionAndReproduction() {
         const int matingCount = std::round(selectionProba * (float) mEntities.size());
         vigourScore[i] = matingCount;
     }
+
     // Two pointer mating selection algo (roulette wheel)
     int higherFitnessIdx = 0;
     // New vector containing new population
@@ -90,6 +99,7 @@ void Game::startSelectionAndReproduction() {
         // Consider the next alpha
         ++higherFitnessIdx;
     }
+
     // Set population to newPopulation
     mEntities = std::move(newPopulation);
 }

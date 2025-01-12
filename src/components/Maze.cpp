@@ -158,6 +158,9 @@ Maze::Maze(const int width, const int height)
 
     // Fill the fitness matrix
     fillFitnessMaze(mBoolMaze, mInverseFitnessMaze);
+
+    // Set max mutation count
+    States::maxMutationCount = mChromosmeFriend.mWhiteCellCount;
 }
 
 Maze::~Maze() = default;

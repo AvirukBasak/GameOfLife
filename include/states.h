@@ -36,6 +36,10 @@ public:
     static sf::Font defaultSfmlFont;
     static ImFont *defaultImguiFont;
     static MazeCellToolTipData mazeCellTooltipData;
+    static int mutationCount;
+    static int maxMutationCount;
+    static int highestFitnessThisGen;
+    static int highestOverallFitness;
     static int currentGeneration;
 
     static void init();

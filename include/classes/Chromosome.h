@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "SFML/System/Vector2.hpp"
+
+#include "states.h"
 #include "components/Maze.h"
 
 class Chromosome {
@@ -41,7 +43,7 @@ public:
      *                      If not given or exceeds chromosome length, all genes wll be mutated.
      * @return A new mutated chromosome.
      */
-    void mutateRandom(int mutationCount = 0);
+    void mutateRandom(int mutationCount = States::mutationCount);
 
     /**
      * Uses random single-point crossover strategy where a single random point is chosen

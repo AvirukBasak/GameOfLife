@@ -35,17 +35,17 @@ Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf:
     return mChromoString[geneLocation];
 }
 
-void Chromosome::mutateRandom(int mutationCount) {
-    // If mutationCount is 0 or exceeds chromosome length, mutate all genes
-    if (mutationCount <= 0 || mutationCount > mChromoString.size()) {
-        mutationCount = mChromoString.size();
+void Chromosome::mutateRandom(const int mutationCount) {
+    // If mutationCount is 0, return
+    if (mutationCount == 0) {
+        return;
     }
 
     // Create a uniform distribution for selecting random moves
     std::uniform_int_distribution<> moveDistrib(1, 8);
 
     // Create a uniform distribution for selecting gene positions
-    std::uniform_int_distribution<> positionDistrib(0, mChromoString.size() - 1);
+    std::uniform_int_distribution<> positionDistrib(0, (int) mChromoString.size() - 1);
 
     // Perform random mutations
     for (int i = 0; i < mutationCount; ++i) {
@@ -68,7 +68,7 @@ std::pair<Chromosome, Chromosome> Chromosome::crossoverSinglePoint(const Chromos
     assert(child2.mChromoString.size() == other.mChromoString.size());
 
     // Select random crossover point for this parent.
-    std::uniform_int_distribution<> distrib(0, mChromoString.size() - 1);
+    std::uniform_int_distribution<> distrib(0, (int) mChromoString.size() - 1);
     const int crossoverPoint = distrib(gen);
 
     // Do child1 = this[:cp] + other[cp:]

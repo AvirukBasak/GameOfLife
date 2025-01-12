@@ -22,6 +22,10 @@ sf::Font States::defaultSfmlFont;
 ImFont *States::defaultImguiFont = nullptr;
 States::MazeCellToolTipData States::mazeCellTooltipData{};
 int States::currentGeneration = 1;
+int States::highestFitnessThisGen = 0;
+int States::highestOverallFitness = 0;
+int States::mutationCount = 1;
+int States::maxMutationCount = 1;
 
 void States::init() {
     defaultFontPath = Utils::pathjoin({Constants::ASSETS_PATH, "fonts", "arial.ttf"});

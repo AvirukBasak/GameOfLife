@@ -48,6 +48,15 @@ void ui() {
     spacing(spacing2);
 
     // Mutation Probability slider
+    float mutationPercentage = (float) States::mutationCount / (float) States::maxMutationCount * 100.f;
+    ImGui::Text("Mutation Percent: %d Gene%s", States::mutationCount, States::mutationCount == 1 ? "" : "s");
+    spacing(spacing1);
+    ImGui::SliderFloat("##MutationPercent", &mutationPercentage, 0, 100, "%.2f %%");
+    States::mutationCount = (int) ((float) States::maxMutationCount * mutationPercentage / 100.f);
+
+    spacing(spacing2);
+
+    // Mutation Probability slider
     ImGui::Text("Mutation Probability");
     spacing(spacing1);
     ImGui::SliderFloat("##MutationProbability", &States::mutationProbability, 0.0f, 1.0f, "%.2f");
@@ -60,6 +69,11 @@ void ui() {
     if (ImGui::Button("Next Generation")) {
         ++States::currentGeneration;
     }
+
+    spacing(spacing2);
+
+    ImGui::Text("Current Highest Fitness: %d", States::highestFitnessThisGen);
+    ImGui::Text("Overall Highest Fitness: %d", States::highestOverallFitness);
 }
 
 void ControlPanel::callImGuiComponents() {

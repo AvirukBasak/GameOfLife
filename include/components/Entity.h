@@ -29,7 +29,7 @@ public:
      * The multiplier States::pixelMovementSpeedScaler is used to scale this to increase simultation speed.
      * This is in pixels and not in cells.
      */
-    static constexpr int UNIT_MOVE_PIXEL_PER_SEC = 5;
+    static constexpr int UNIT_MOVE_PIXEL_PER_SEC = 20;
 
     /**
      * How often update to enity position is to be done given that an
