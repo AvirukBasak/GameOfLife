@@ -43,9 +43,10 @@ void Entity::handleEvent(const sf::Event &event) {
 
 void Entity::update() {
     // Update entity position every ENTITY_UPDATE_INTERVAL_MS ms
-    const sf::Time enityUpdateInterval = sf::milliseconds(ENTITY_UPDATE_INTERVAL_MS);
+    const sf::Time enityUpdateInterval = sf::microseconds((int64_t) ENTITY_UPDATE_INTERVAL_MS * 1000.f);
     // In 1000 ms you move by UNIT_MOVE_PIXEL_PER_SEC, so we calculate move in each ENTITY_UPDATE_INTERVAL_MS ms
-    constexpr float movePerUpdateInterval = UNIT_MOVE_PIXEL_PER_SEC / 1000.0f * ENTITY_UPDATE_INTERVAL_MS;
+    const float movePerUpdateInterval = (float) UNIT_MOVE_PIXEL_PER_SEC * States::simulationSpeedScaler *
+                                        (float) enityUpdateInterval.asMicroseconds() / 1e6f;
     if (mEntityPosnUpdateClock.getElapsedTime() >= enityUpdateInterval) {
         const auto [oldX, oldY] = mShape.getPosition();
         const sf::Vector2i cellNum = mMaze.pixelToCellNumber(oldX, oldY);
@@ -88,8 +89,6 @@ void Entity::update() {
                 }
                 break;
         }
-        dX *= States::simulationSpeedScaler;
-        dY *= States::simulationSpeedScaler;
         if (mMaze.isValidMoveInPixels(mDiameter, oldX, oldY, dX, dY)) {
             mShape.setPosition({oldX + dX, oldY + dY});
         } else {

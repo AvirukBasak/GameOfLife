@@ -5,6 +5,7 @@
 #ifndef COMPONENTS_ENTITY_H
 #define COMPONENTS_ENTITY_H
 
+#include "constants.h"
 #include "classes/Chromosome.h"
 #include "interfaces/IGameComponent.h"
 
@@ -34,7 +35,7 @@ public:
      * How often update to enity position is to be done given that an
      * entity moves UNIT_MOVE_PIXEL_PER_SEC pixels in a second.
      */
-    static constexpr int ENTITY_UPDATE_INTERVAL_MS = 75;
+    static constexpr float ENTITY_UPDATE_INTERVAL_MS = 1000.f / Constants::RENDER_FPS;
 
     explicit Entity(int id, const Maze &maze);
 
