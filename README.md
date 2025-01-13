@@ -17,7 +17,9 @@ If you are using an older (or newer) version of SFML, you may need to change the
 
 ## Screenshots
 ### Window
-[Screencast from 2025-01-12 23-20-57.webm](https://github.com/user-attachments/assets/4ed6eb33-7be4-4dd7-b8ca-51e1cfa84092)
+![Sim Demo from WEBP](https://github.com/user-attachments/assets/11023742-c3f5-4e76-883d-ea9e6b7a88b4)
+
+https://github.com/user-attachments/assets/9f207df8-3658-4b9c-a09f-580fc238f0c3
 
 ### Fitness Function
 ![Screenshot from 2025-01-10 00-48-04](https://github.com/user-attachments/assets/6f732ffe-f17d-479f-8b2c-54262f17c103)
