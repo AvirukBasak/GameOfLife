@@ -68,7 +68,7 @@ void Game::startSelectionAndReproduction() {
         const int fitness = mMaze.getFitnessOfCellNumber(mMaze.pixelToCellNumber(pos.x, pos.y));
         const float selectionProba = (float) fitness / fitnessSum;
         const int matingCount = std::round(selectionProba * (float) mEntities.size());
-        vigourScore[i] = matingCount;
+        vigourScore.at(i) = matingCount;
     }
 
     // Two pointer mating selection algo (roulette wheel)
@@ -84,7 +84,7 @@ void Game::startSelectionAndReproduction() {
         // However, if higherFitnessIdx still has vigour left, we will repeat the process
         // Continue till higherFitnessIdx reaches 0 = no more vigour
         while (lowerFitnessIdx < mEntities.size()
-               && vigourScore[higherFitnessIdx] > 0
+               && vigourScore.at(higherFitnessIdx) > 0
                && newPopulation.size() < States::populationSize) {
             const Entity &thePartner = mEntities.at(lowerFitnessIdx);
             // Reporduce
@@ -92,7 +92,7 @@ void Game::startSelectionAndReproduction() {
             newPopulation.emplace_back(child1.mId, child1.mMaze, child1.mChromosome);
             newPopulation.emplace_back(child2.mId, child2.mMaze, child2.mChromosome);
             // Reduce matingCount[higherFitnessIdx]
-            --vigourScore[higherFitnessIdx];
+            --vigourScore.at(higherFitnessIdx);
             // Go to next mate
             ++lowerFitnessIdx;
         }

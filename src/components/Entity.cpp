@@ -9,7 +9,7 @@
 #include "components/Maze.h"
 #include "components/Entity.h"
 
-Entity::Entity(const int id, const Maze &maze)
+Entity::Entity(const uint64_t id, const Maze &maze)
     : mId(id), mMaze(maze), mChromosome(maze), mHasStopped(false),
       mDiameter(maze.getCellSizeInPixels() / 2) {
     mShape.setRadius(mDiameter / 2);
@@ -21,7 +21,7 @@ Entity::Entity(const int id, const Maze &maze)
     );
 };
 
-Entity::Entity(const int id, const Maze &maze, const Chromosome &chromosome)
+Entity::Entity(const uint64_t id, const Maze &maze, const Chromosome &chromosome)
     : mId(id), mMaze(maze), mChromosome(chromosome), mHasStopped(false),
       mDiameter(maze.getCellSizeInPixels() / 2) {
     mShape.setRadius(mDiameter / 2);
@@ -35,6 +35,10 @@ Entity::Entity(const int id, const Maze &maze, const Chromosome &chromosome)
 
 Entity &Entity::operator=(const Entity &other) {
     this->mChromosome = other.mChromosome;
+    this->mShape = other.mShape;
+    this->mEntityPosnUpdateClock = other.mEntityPosnUpdateClock;
+    this->mHasStopped = other.mHasStopped;
+    this->mDiameter = other.mDiameter;
     return *this;
 }
 

@@ -57,15 +57,15 @@ void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vect
      * with std::numeric_limits<int>::max() */
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if (false == mBoolMaze[i][j]) {
-                mFitnessMaze[i][j] = std::numeric_limits<int>::max();
+            if (false == mBoolMaze.at(i).at(j)) {
+                mFitnessMaze.at(i).at(j) = std::numeric_limits<int>::max();
             }
         }
     }
 
-    if (true == mBoolMaze[destY][destX]) {
+    if (true == mBoolMaze.at(destY).at(destX)) {
         queue.emplace(destX, destY);
-        mFitnessMaze[destY][destX] = 0;
+        mFitnessMaze.at(destY).at(destX) = 0;
     } else {
         throw std::invalid_argument("Unexpected false at Maze starting cell");
     }
@@ -80,10 +80,10 @@ void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vect
 
             if (nx >= 0 && nx < size &&
                 ny >= 0 && ny < size &&
-                true == mBoolMaze[ny][nx] &&
-                mFitnessMaze[ny][nx] > mFitnessMaze[y][x] + 1
+                true == mBoolMaze.at(ny).at(nx) &&
+                mFitnessMaze.at(ny).at(nx) > mFitnessMaze.at(y).at(x) + 1
             ) {
-                mFitnessMaze[ny][nx] = mFitnessMaze[y][x] + 1;
+                mFitnessMaze.at(ny).at(nx) = mFitnessMaze.at(y).at(x) + 1;
                 queue.emplace(nx, ny);
             }
         }
@@ -92,9 +92,9 @@ void fillFitnessMaze(const std::vector<std::vector<bool> > &mBoolMaze, std::vect
     // Fill cells that are not reachable with a specific value (e.g., -1)
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
-            if (mFitnessMaze[i][j] == std::numeric_limits<int>::max()) {
+            if (mFitnessMaze.at(i).at(j) == std::numeric_limits<int>::max()) {
                 // Indicating unreachable cells
-                mFitnessMaze[i][j] = -1;
+                mFitnessMaze.at(i).at(j) = -1;
             }
         }
     }
@@ -143,18 +143,19 @@ Maze::Maze(const int width, const int height)
             }
             // If white image cell (or far enough from black in color)
             if (grayScale >= 64) {
-                mBoolMaze[i][j] = true; // Mark cell as true
+                mBoolMaze.at(i).at(j) = true; // Mark cell as true
                 mChromosmeFriend.mWhiteCellCount += 1; // Increment count of white cells by 1
                 // Set mCellNumberToGeneIndexMapping for (j, i) i.e. (row, col) to the index of gene
-                mChromosmeFriend.mCellNumberToGeneIndexMapping[{j, i}] =
-                        mChromosmeFriend.mWhiteCellCount - 1;
+                mChromosmeFriend.mCellNumberToGeneIndexMapping.insert({
+                    {j, i}, mChromosmeFriend.mWhiteCellCount - 1
+                });
             }
         }
     }
 
     // Ensure (1,1) and (59-1, 59-1) are true
-    assert(mBoolMaze[1][1]);
-    assert(mBoolMaze[CELLS_PER_DIMENSION-2][CELLS_PER_DIMENSION-2]);
+    assert(mBoolMaze.at(1).at(1));
+    assert(mBoolMaze.at(CELLS_PER_DIMENSION-2).at(CELLS_PER_DIMENSION-2));
 
     // Fill the fitness matrix
     fillFitnessMaze(mBoolMaze, mInverseFitnessMaze);
@@ -169,7 +170,7 @@ void Maze::handleEvent(const sf::Event &event) {
     if (event.type == sf::Event::MouseMoved) {
         const auto [x, y] = event.mouseMove;
         const sf::Vector2i cellNum = pixelToCellNumber(x, y);
-        if (isCellNumberValid(cellNum) && mBoolMaze[cellNum.y][cellNum.x]) {
+        if (isCellNumberValid(cellNum) && mBoolMaze.at(cellNum.y).at(cellNum.x)) {
             const int fitness = getFitnessOfCellNumber(cellNum);
             const sf::Vector2f pixel = cellNumberToPixel(cellNum);
             // Compute the tooltip text and set state data
@@ -230,29 +231,34 @@ bool Maze::isValidMoveInPixels(const float yourSize, const float pixelX, const f
     const float newY = pixelY + dy;
     const sf::Vector2i cellNumForEntityTL = pixelToCellNumber(newX, newY);
     const sf::Vector2i cellNumForEntityBR = pixelToCellNumber(newX + yourSize, newY + yourSize);
-    return isCellNumberValid(cellNumForEntityTL) && true == mBoolMaze[cellNumForEntityTL.y][cellNumForEntityTL.x]
-           && isCellNumberValid(cellNumForEntityBR) && true == mBoolMaze[cellNumForEntityBR.y][cellNumForEntityBR.x];
+    return isCellNumberValid(cellNumForEntityTL)
+           && true == mBoolMaze.at(cellNumForEntityTL.y).at(cellNumForEntityTL.x)
+           && isCellNumberValid(cellNumForEntityBR)
+           && true == mBoolMaze.at(cellNumForEntityBR.y).at(cellNumForEntityBR.x);
 }
 
 bool Maze::isCellNumberValid(sf::Vector2i cellNum) const {
     const auto [j, i] = cellNum;
-    return i >= 0 && i < mBoolMaze.size() && j >= 0 && j < mBoolMaze[0].size();
+    return i >= 0 && i < mBoolMaze.size() && j >= 0 && j < mBoolMaze.at(0).size();
 }
 
 int Maze::getFitnessOfCellNumber(sf::Vector2i cellNum) const {
     const auto [j, i] = cellNum;
-    return WORST_INVERSE_FITNESS - mInverseFitnessMaze[i][j];
+    if (!isCellNumberValid({j, i}) || !mBoolMaze.at(i).at(j)) {
+        return 0;
+    }
+    return WORST_INVERSE_FITNESS - mInverseFitnessMaze.at(i).at(j);
 }
 
 sf::Vector2i Maze::getSrcCellNumber() const {
     // ensure (1,1) is true
-    assert(mBoolMaze[1][1]);
+    assert(mBoolMaze.at(1).at(1));
     return {1, 1};
 }
 
 sf::Vector2i Maze::getDestCellNumber() const {
     // ensure (59-1, 59-1) is true
-    assert(mBoolMaze[CELLS_PER_DIMENSION-2][CELLS_PER_DIMENSION-2]);
+    assert(mBoolMaze.at(CELLS_PER_DIMENSION-2).at(CELLS_PER_DIMENSION-2));
     return {CELLS_PER_DIMENSION - 2, CELLS_PER_DIMENSION - 2};
 }
 

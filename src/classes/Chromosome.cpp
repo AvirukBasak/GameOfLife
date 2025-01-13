@@ -32,7 +32,7 @@ Chromosome::GeneticMoveInfo Chromosome::getGeneticMoveInfoByCellNumber(const sf:
         return STOP;
     }
     const int geneLocation = mMaze.mChromosmeFriend.mCellNumberToGeneIndexMapping.at(cellNum);
-    return mChromoString[geneLocation];
+    return mChromoString.at(geneLocation);
 }
 
 void Chromosome::mutateRandom(const int mutationCount) {
@@ -54,7 +54,7 @@ void Chromosome::mutateRandom(const int mutationCount) {
         // Generate a new random move
         const GeneticMoveInfo newMove = (GeneticMoveInfo) moveDistrib(gen);
         // Apply mutation
-        this->mChromoString[position] = newMove;
+        this->mChromoString.at(position) = newMove;
     }
 }
 

@@ -10,7 +10,7 @@
 #include "interfaces/IGameComponent.h"
 
 class Entity final : public IGameComponent {
-    const int mId;
+    const uint64_t mId;
     const Maze &mMaze;
 
     Chromosome mChromosome;
@@ -37,9 +37,9 @@ public:
      */
     static constexpr float ENTITY_UPDATE_INTERVAL_MS = 1000.f / Constants::RENDER_FPS;
 
-    explicit Entity(int id, const Maze &maze);
+    explicit Entity(uint64_t id, const Maze &maze);
 
-    explicit Entity(int id, const Maze &maze, const Chromosome &chromosome);
+    explicit Entity(uint64_t id, const Maze &maze, const Chromosome &chromosome);
 
     Entity &operator=(const Entity &other);
 
