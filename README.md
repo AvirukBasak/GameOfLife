@@ -1,4 +1,4 @@
-# Genetic Algo Based Maze Solver
+# Evolutionary Maze Solver
 
 Idea taken from this video https://www.youtube.com/watch?v=XP2sFzp2Rig by [argonaut](https://www.youtube.com/@argonautcode).
 
