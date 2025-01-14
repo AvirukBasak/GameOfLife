@@ -12,10 +12,10 @@ Ideally, you'll want CLion as an IDE but is not important.
 You may be asked at every step to install a few libraries which you can with your distro package manager if possible.
 If you are having dependency issues, or do not have said library versions in the distro package registry, change the SFML version at `dependencies/CMakeLists.txt` and see if it helps.
 
-If you are not able to setup still, delete `dependecies/` and remove the line `add_subdirectory(dependencies)` from `/CMakeLists.txt`. Install SFML using your package manager and see if the project compiles.
+If you are not able to setup still, delete `dependencies/` and remove the line `add_subdirectory(dependencies)` from `/CMakeLists.txt`. Install SFML using your package manager and see if the project compiles.
 If you are using an older (or newer) version of SFML, you may need to change the source code of this project to fit with the API.
 
-ImGui font support and NewFrame functions are platform dependent and you'll need to call ImGui_ImplXXXX_NeeFrame() depending on your platform. On Windows it'll be DirectX and Win32 and on Linux it'll be OpenGL3.
+ImGui font support and NewFrame functions are platform dependent and you'll need to call ImGui_ImplXXXX_NewFrame() depending on your platform. On Windows it'll be DirectX and Win32 and on Linux it'll be OpenGL3.
 
 Therefore depending on your platform, you'll need to call the functions accordingly. See [`thirdparty/imgui/backends`](thirdparty/imgui/backends) for platform specific sources.
 
