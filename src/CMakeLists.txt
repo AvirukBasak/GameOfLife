@@ -1,16 +1,9 @@
+file(GLOB_RECURSE SOURCE_FILES *.cpp)
+
 target_sources(${PROJECT_NAME}
         PUBLIC
-        constants.cpp
-        states.cpp
-        utils.cpp
-        main.cpp
-        classes/Chromosome.cpp
-        classes/Game.cpp
-        components/CounterText.cpp
-        components/Entity.cpp
-        components/Maze.cpp
-        components/MazeCellToolTip.cpp
-        imgui/ControlPanel.cpp
+        ${SOURCE_FILES}
 )
 
+# Add subdirectory if needed
 # add_subdirectory(subdir)

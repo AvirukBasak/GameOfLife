@@ -1,9 +1,21 @@
+file(GLOB IMGUI_SRC
+        imgui/*.cpp
+        imgui/*.c
+)
+
+file(GLOB IMGUI_SFML_SRC
+        imgui-sfml/*.cpp
+        imgui-sfml/*.c
+)
+
+file(GLOB IMGUI_BACKENDS
+        imgui/backends/imgui_impl_opengl3.cpp
+        imgui/backends/imgui_impl_opengl3.h
+)
+
 target_sources(${PROJECT_NAME}
         PUBLIC
-        imgui/imgui.cpp
-        imgui/imgui_demo.cpp
-        imgui/imgui_draw.cpp
-        imgui/imgui_tables.cpp
-        imgui/imgui_widgets.cpp
-        imgui-sfml/imgui-SFML.cpp
+        ${IMGUI_SRC}
+        ${IMGUI_SFML_SRC}
+        ${IMGUI_BACKENDS}
 )
