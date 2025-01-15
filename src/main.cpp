@@ -24,13 +24,14 @@ int main() {
         sf::Style::Titlebar | sf::Style::Close
     );
     window.setFramerateLimit(Constants::RENDER_FPS);
-    if (!ImGui::SFML::Init(window)) {
-        std::cerr << "Failed to initialize ImGui!" << std::endl;
-    }
 
     ImGui::SetCurrentContext(ImGui::CreateContext());
     ImGui_ImplOpenGL3_Init();
     ImGui_ImplOpenGL3_NewFrame();
+
+    if (!ImGui::SFML::Init(window)) {
+        std::cerr << "Failed to initialize ImGui!" << std::endl;
+    }
 
     States::defaultImguiFont = ImGui::GetIO().Fonts->AddFontFromFileTTF(States::defaultFontPath.c_str(), 15);
     if (!States::defaultImguiFont) {
