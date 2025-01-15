@@ -102,10 +102,10 @@ void ControlPanel::callImGuiComponents() {
                  ImGuiWindowFlags_NoResize |
                  ImGuiWindowFlags_NoCollapse);
 
-    // ImGui::PushFont(States::defaultImguiFont);
+    ImGui::PushFont(States::defaultImguiFont);
 
     ui();
 
-    // ImGui::PopFont();
+    ImGui::PopFont();
     ImGui::End();
 }

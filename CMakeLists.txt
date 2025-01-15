@@ -7,6 +7,7 @@ project(EvoMazeSolver
 include_directories(
         include
         thirdparty/include
+        thirdparty/imgui/backends
 )
 
 add_executable(${PROJECT_NAME})

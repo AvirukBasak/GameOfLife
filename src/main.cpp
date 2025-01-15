@@ -1,8 +1,10 @@
 #include <iostream>
+#include <GL/gl.h>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "imgui.h"
+#include "imgui_impl_opengl3.h"
 #include "imgui-SFML.h"
 
 #include "constants.h"
@@ -26,10 +28,31 @@ int main() {
         std::cerr << "Failed to initialize ImGui!" << std::endl;
     }
 
-    // States::defaultImguiFont = ImGui::GetIO().Fonts->AddFontFromFileTTF(States::defaultFontPath.c_str(), 12);
-    // if (!States::defaultImguiFont) {
-    //     throw std::runtime_error(std::string("imgui: failed to load '").append(States::defaultFontPath).append("'"));
-    // }
+    ImGui::SetCurrentContext(ImGui::CreateContext());
+    ImGui_ImplOpenGL3_Init();
+    ImGui_ImplOpenGL3_NewFrame();
+
+    States::defaultImguiFont = ImGui::GetIO().Fonts->AddFontFromFileTTF(States::defaultFontPath.c_str(), 15);
+    if (!States::defaultImguiFont) {
+        throw std::runtime_error(std::string("imgui: failed to load '").append(States::defaultFontPath).append("'"));
+    }
+
+    // This is how you load a font in ImGui w/ SFML & OpenGL3 :)
+    {
+        unsigned char *outPixels;
+        int outWidth, outHeight;
+        ImGui::GetIO().Fonts->GetTexDataAsRGBA32(&outPixels, &outWidth, &outHeight);
+
+        GLuint fontTextureID;
+        glGenTextures(1, &fontTextureID);
+        glBindTexture(GL_TEXTURE_2D, fontTextureID);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, outWidth, outHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, outPixels);
+
+        // You can store the texture ID and pass it to the ImGui renderer
+        ImGui::GetIO().Fonts->TexID = (void *) (intptr_t) fontTextureID;
+    }
 
     // Create a game object
     Game game(window);
@@ -84,5 +107,6 @@ int main() {
     }
 
     ImGui::SFML::Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
     return 0;
 }
