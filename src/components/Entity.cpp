@@ -50,44 +50,46 @@ void Entity::handleEvent(const sf::Event &event) {
 }
 
 void Entity::update() {
-    // Update entity position every ENTITY_UPDATE_INTERVAL_MS ms
-    const sf::Time enityUpdateInterval = sf::microseconds((int64_t) ENTITY_UPDATE_INTERVAL_MS * 1000.f);
-    // In 1000 ms you move by UNIT_MOVE_PIXEL_PER_SEC, so we calculate move in each ENTITY_UPDATE_INTERVAL_MS ms
-    const float movePerUpdateInterval = (float) UNIT_MOVE_PIXEL_PER_SEC * States::simulationSpeedScaler *
-                                        (float) enityUpdateInterval.asMicroseconds() / 1e6f;
-    if (mEntityPosnUpdateClock.getElapsedTime() >= enityUpdateInterval) {
+    // Update entity position according to interval
+    const sf::Time enityUpdateInterval = sf::seconds(
+        States::simulationSpeedScaler == 0
+            ? std::numeric_limits<float>::infinity()
+            : ENTITY_UPDATE_INTERVAL_SEC / States::simulationSpeedScaler
+    );
+    // No updates if sim speed scaler is 0
+    if (States::simulationSpeedScaler != 0 && mEntityPosnUpdateClock.getElapsedTime() >= enityUpdateInterval) {
         const auto [oldX, oldY] = mShape.getPosition();
         const sf::Vector2i cellNum = mMaze.pixelToCellNumber(oldX, oldY);
         const Chromosome::GeneticMoveInfo geneticMoveInfo = mChromosome.getGeneticMoveInfoByCellNumber(cellNum);
         float dX = 0, dY = 0;
         switch (geneticMoveInfo) {
             case Chromosome::UP:
-                dY = -movePerUpdateInterval;
+                dY = -UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::DOWN:
-                dY = +movePerUpdateInterval;
+                dY = +UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::LEFT:
-                dX = -movePerUpdateInterval;
+                dX = -UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::RIGHT:
-                dX = +movePerUpdateInterval;
+                dX = +UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::TOPLEFT:
-                dY = -movePerUpdateInterval;
-                dX = -movePerUpdateInterval;
+                dY = -UNIT_MOVE_IN_PIXELS;
+                dX = -UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::TOPRIGHT:
-                dY = -movePerUpdateInterval;
-                dX = +movePerUpdateInterval;
+                dY = -UNIT_MOVE_IN_PIXELS;
+                dX = +UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::BOTTOMLEFT:
-                dY = +movePerUpdateInterval;
-                dX = -movePerUpdateInterval;
+                dY = +UNIT_MOVE_IN_PIXELS;
+                dX = -UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::BOTTOMRIGHT:
-                dY = +movePerUpdateInterval;
-                dX = +movePerUpdateInterval;
+                dY = +UNIT_MOVE_IN_PIXELS;
+                dX = +UNIT_MOVE_IN_PIXELS;
                 break;
             case Chromosome::STOP:
                 if (!mHasStopped) {

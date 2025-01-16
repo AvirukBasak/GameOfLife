@@ -28,16 +28,15 @@ class Entity final : public IGameComponent {
 public:
     /**
      * Defines a single unit of move an Entity can take in the Maze.
-     * The multiplier States::pixelMovementSpeedScaler is used to scale this to increase simultation speed.
      * This is in pixels and not in cells.
      */
-    static constexpr int UNIT_MOVE_PIXEL_PER_SEC = 20;
+    static constexpr float UNIT_MOVE_IN_PIXELS = 0.125f;
 
     /**
-     * How often update to enity position is to be done given that an
-     * entity moves UNIT_MOVE_PIXEL_PER_SEC pixels in a second.
+     * How often update to enity position is to be done. To be divided by States::simulationSpeedScaler
+     * to increase simulation speed by scaling down update interval.
      */
-    static constexpr float ENTITY_UPDATE_INTERVAL_MS = 1000.f / Constants::RENDER_FPS;
+    static constexpr float ENTITY_UPDATE_INTERVAL_SEC = 1 / Constants::RENDER_FPS;
 
     explicit Entity(uint64_t id, const Maze &maze);
 
