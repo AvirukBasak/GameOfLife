@@ -22,7 +22,8 @@ Therefore depending on your platform, you'll need to call the functions accordin
 ## Screenshots
 ### Window
 
-https://github.com/user-attachments/assets/9f207df8-3658-4b9c-a09f-580fc238f0c3
+[DemoVideo.webm](https://github.com/user-attachments/assets/cf8a842d-814b-4241-a761-abc490025fcf)
+
 
 ### Fitness Function
 ![Screenshot from 2025-01-10 00-48-04](https://github.com/user-attachments/assets/6f732ffe-f17d-479f-8b2c-54262f17c103)
