@@ -40,7 +40,7 @@ int main() {
         sf::Style::Titlebar | sf::Style::Close
     );
 
-    window.setFramerateLimit(Constants::RENDER_FPS);
+    // window.setFramerateLimit(Constants::RENDER_FPS);
 
     if (!ImGui::SFML::Init(window)) {
         std::cerr << "Failed to initialize ImGui!" << std::endl;
