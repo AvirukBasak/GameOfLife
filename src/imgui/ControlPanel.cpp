@@ -75,6 +75,15 @@ void ui() {
 
     spacing(spacing2);
 
+    // Count of elites
+    {
+        ImGui::Text("Elites in Next Generation");
+        spacing(spacing1);
+        ImGui::SliderInt("##ElitesCount", &States::elitismCount, 0, States::populationSize / 2);
+    }
+
+    spacing(spacing2);
+
     // Next Generation button
     {
         ImGui::Text("Current Generation: %d", States::currentGeneration);

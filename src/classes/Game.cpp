@@ -76,8 +76,9 @@ void Game::startSelectionAndReproduction() {
     // New vector containing new population
     std::vector<Entity> newPopulation{};
     // Higher and lower should never be equal
-    // Also, the populatioon size should not exceed the States::entityCount limit
-    while (higherFitnessIdx < mEntities.size() - 1 && newPopulation.size() < States::populationSize) {
+    // Also, the population size should not exceed the States::populationSize - States::elitismCount limit
+    while (higherFitnessIdx < mEntities.size() - 1
+           && newPopulation.size() < States::populationSize - States::elitismCount) {
         const Entity &theAlpha = mEntities.at(higherFitnessIdx);
         int lowerFitnessIdx = higherFitnessIdx + 1;
         // Mate the higherFitnessIdx with each Entity once
@@ -85,7 +86,7 @@ void Game::startSelectionAndReproduction() {
         // Continue till higherFitnessIdx reaches 0 = no more vigour
         while (lowerFitnessIdx < mEntities.size()
                && vigourScore.at(higherFitnessIdx) > 0
-               && newPopulation.size() < States::populationSize) {
+               && newPopulation.size() < States::populationSize - States::elitismCount) {
             const Entity &thePartner = mEntities.at(lowerFitnessIdx);
             // Reporduce
             const auto [child1, child2] = theAlpha.mateWith(thePartner);
@@ -98,6 +99,15 @@ void Game::startSelectionAndReproduction() {
         }
         // Consider the next alpha
         ++higherFitnessIdx;
+    }
+
+    // Insert the elites
+    for (const Entity &e: mEntities) {
+        if (newPopulation.size() < States::populationSize) {
+            newPopulation.emplace_back(e.mId, e.mMaze, e.mChromosome);
+        } else {
+            break;
+        }
     }
 
     // Set population to newPopulation

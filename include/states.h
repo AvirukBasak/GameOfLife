@@ -41,6 +41,7 @@ public:
     static int highestFitnessThisGen;
     static int highestOverallFitness;
     static int currentGeneration;
+    static int elitismCount;
 
     static void init();
 };

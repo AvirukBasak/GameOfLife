@@ -26,6 +26,7 @@ int States::highestFitnessThisGen = 0;
 int States::highestOverallFitness = 0;
 int States::mutationCount = 1;
 int States::maxMutationCount = 1;
+int States::elitismCount = 1;
 
 void States::init() {
     defaultFontPath = Utils::pathjoin({Constants::ASSETS_PATH, "fonts", "arial.ttf"});
