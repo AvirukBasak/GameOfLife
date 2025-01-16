@@ -12,6 +12,12 @@
 #include "classes/Game.h"
 #include "imgui/ControlPanel.h"
 
+/*
+ * WARNING:
+ - I DON'T LNOW IMGUI
+ - I DON'T KNOW OPENGL
+ - I PROBABLY HAVE DONE EVERYTHING WRONG AND IT SOMEHOW STILL WORKS */
+
 // Font loading function should be called once after font creation
 inline void LoadFontToImGuiWithOpenGL() {
     unsigned char *outPixels;
@@ -40,6 +46,9 @@ int main() {
         sf::Style::Titlebar | sf::Style::Close
     );
 
+    /* Disabled coz this apparantly uses sf::sleep which messes up updater function timings in main loop
+     * Updater functions (update()) are to be called on every iteration, and each "comnponent" is resposible for
+     * updating its content according to local intervals, etc. */
     // window.setFramerateLimit(Constants::RENDER_FPS);
 
     if (!ImGui::SFML::Init(window)) {
@@ -47,6 +56,7 @@ int main() {
         return -1;
     }
 
+    // I wanna load custom fonts to ImGui UI
     ImGui_ImplOpenGL3_Init();
 
     // Load font
@@ -91,6 +101,7 @@ int main() {
             sfmlRenderDeltaClock.restart();
         }
 
+        // This probably needs FPS limiting
         ImGui::SFML::Update(window, imguiRenderDeltaClock.restart());
         controlPanel.callImGuiComponents();
         ImGui::SFML::Render(window);
