@@ -14,14 +14,16 @@ class Entity final : public IGameComponent {
     const Maze &mMaze;
 
     Chromosome mChromosome;
-    sf::CircleShape mShape;
+    sf::RectangleShape mShape;
 
     sf::Clock mEntityPosnUpdateClock;
 
     bool mHasStopped;
-    float mDiameter;
+    float mEnd2EndSize;
 
     friend class Game;
+
+    static constexpr float OUTLINE_THICKNESS = 1.f;
 
 public:
     /**

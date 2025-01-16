@@ -11,25 +11,29 @@
 
 Entity::Entity(const uint64_t id, const Maze &maze)
     : mId(id), mMaze(maze), mChromosome(maze), mHasStopped(false),
-      mDiameter(maze.getCellSizeInPixels() / 2) {
-    mShape.setRadius(mDiameter / 2);
-    mShape.setFillColor(sf::Color::Red);
+      mEnd2EndSize(maze.getCellSizeInPixels() / 1.5f) {
+    mShape.setOutlineThickness(OUTLINE_THICKNESS);
+    mShape.setOutlineColor(sf::Color(100, 0, 0));
+    mShape.setSize({mEnd2EndSize - 2 * OUTLINE_THICKNESS, mEnd2EndSize - 2 * OUTLINE_THICKNESS});
+    mShape.setFillColor(sf::Color(255, 50, 100));
     const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
-        pixel.x,
-        pixel.y
+        pixel.x + 2 * OUTLINE_THICKNESS,
+        pixel.y + 2 * OUTLINE_THICKNESS
     );
 };
 
 Entity::Entity(const uint64_t id, const Maze &maze, const Chromosome &chromosome)
     : mId(id), mMaze(maze), mChromosome(chromosome), mHasStopped(false),
-      mDiameter(maze.getCellSizeInPixels() / 2) {
-    mShape.setRadius(mDiameter / 2);
-    mShape.setFillColor(sf::Color::Red);
+      mEnd2EndSize(maze.getCellSizeInPixels() / 1.5f) {
+    mShape.setOutlineThickness(OUTLINE_THICKNESS);
+    mShape.setOutlineColor(sf::Color(100, 0, 0));
+    mShape.setSize({mEnd2EndSize - 2 * OUTLINE_THICKNESS, mEnd2EndSize - 2 * OUTLINE_THICKNESS});
+    mShape.setFillColor(sf::Color(255, 50, 100));
     const sf::Vector2f pixel = maze.cellNumberToPixel(maze.getSrcCellNumber());
     mShape.setPosition(
-        pixel.x,
-        pixel.y
+        pixel.x + 2 * OUTLINE_THICKNESS,
+        pixel.y + 2 * OUTLINE_THICKNESS
     );
 }
 
@@ -38,7 +42,7 @@ Entity &Entity::operator=(const Entity &other) {
     this->mShape = other.mShape;
     this->mEntityPosnUpdateClock = other.mEntityPosnUpdateClock;
     this->mHasStopped = other.mHasStopped;
-    this->mDiameter = other.mDiameter;
+    this->mEnd2EndSize = other.mEnd2EndSize;
     return *this;
 }
 
@@ -93,7 +97,7 @@ void Entity::update() {
                 }
                 break;
         }
-        if (mMaze.isValidMoveInPixels(mDiameter, oldX, oldY, dX, dY)) {
+        if (mMaze.isValidMoveInPixels(mEnd2EndSize, oldX, oldY, dX, dY)) {
             mShape.setPosition({oldX + dX, oldY + dY});
         } else {
             mHasStopped = true;
