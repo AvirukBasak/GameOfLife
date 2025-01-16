@@ -1,4 +1,3 @@
-#include <imgui_internal.h>
 #include <iostream>
 #include <GL/gl.h>
 
