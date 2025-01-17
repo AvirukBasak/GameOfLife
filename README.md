@@ -19,6 +19,33 @@ ImGui font support and NewFrame functions are platform dependent and you'll need
 
 Therefore depending on your platform, you'll need to call the functions accordingly. See [`thirdparty/imgui/backends`](thirdparty/imgui/backends) for platform specific sources.
 
+### Build
+
+#### Linux
+```bash
+cd $project_dir
+mkdir build
+cd build
+cmake ..
+make
+```
+
+#### Windows
+On Windows use the following to build:
+- [`GNU Make`](https://gnuwin32.sourceforge.net/packages/make.htm) For CMake
+- [`CMake`](https://cmake.org/download/) Can be downloaded via `winget`
+- [`MinGW MSVCRT`](https://github.com/niXman/mingw-builds-binaries/releases) Get the x86_64 Win32 SEH MSVCRT archive.
+
+Download any archives, extract them and set path to the binaries accordingly. After which do the following.
+
+```bash
+cd $project_dir
+mkdir build
+cd build
+cmake -G "MinGW Makefiles" ..
+make
+```
+
 ## Screenshots
 ### Window
 
