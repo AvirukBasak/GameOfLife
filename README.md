@@ -4,6 +4,9 @@ Idea taken from this video https://www.youtube.com/watch?v=XP2sFzp2Rig by [argon
 
 Developed in C++ with `SFML v2.6.0`, `Dear ImGui v1.90.6` and `ImGui-SFML v2.6`.
 
+## Download
+See https://github.com/AvirukBasak/evolutionary-maze-solver/releases
+
 ## Setting Up
 This project was developed and tested on Linux (Ubuntu 24.04) so the following guide is based on the same.
 
